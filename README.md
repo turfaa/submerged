@@ -1,6 +1,6 @@
 # Submerged
 
-A text-based escape/adventure game.
+A text-based escape/adventure game written in Prolog.
 
 ## Story
 
@@ -11,4 +11,3 @@ You wake up alone in a rapidly sinking submarine, abandoned by the rest of the c
 ## Directory structure
 
 ## TODO
-
