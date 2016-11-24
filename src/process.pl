@@ -50,6 +50,18 @@ go(_) :-
 
 
 /* Use Inventory */
-use('fire extinguisher') :- !, get_oxygenLevel(Init), Nxt is Init-3, set_oxygenLevel(Nxt), write('You used the fire extinguisher.'), nl, write('Your Oxygen Level is now '), write(Nxt), write('. (evillaugh)'), nl, nl.
+use('fire extinguisher') :- !, get_oxygenLevel(Init), 
+								Nxt is Init-3, 
+								set_oxygenLevel(Nxt), 
+								write('You used the fire extinguisher.'), 
+								nl, 
+								write('Your Oxygen Level is now '), 
+								write(Nxt), 
+								write('. (evillaugh)'), 
+								nl, nl, 
+								get_inventory(Inventory),
+								delete(Inventory, 'fire extinguisher', NewInventory),
+								set_inventory(NewInventory).
+								
 use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), write('\n').
 
