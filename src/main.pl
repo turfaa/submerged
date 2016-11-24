@@ -1,4 +1,3 @@
-
 /* Main menu loop */
 
 :- initialization(submerged).

@@ -8,6 +8,9 @@ process('s') :- go(s), !, fail.
 process('w') :- go(w), !, fail.
 
 process(use(X)) :- use(X), !, fail.
+process(take(Object)) :- take(Object), !, fail.
+process(drop(Object)) :- drop(Object), !, fail.
+
 process(_) :- write('Invalid command'), nl, !, fail.
 
 
