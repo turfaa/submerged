@@ -72,3 +72,7 @@ init_gameState :-
 		['dead engineer', 'Reactor', 1]
 
 	])).
+
+/* Constants */
+
+maxOxygenLevel(10).
