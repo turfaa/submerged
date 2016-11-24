@@ -8,6 +8,7 @@ render_gameState :-
 
 displayCurrentRoom(CurrentRoom) :- write('You are in the '), write(CurrentRoom), write('.'), nl.
 
+displayInventory([Inventory]) :- write(Inventory), nl.
 displayInventory([]) :- write('You are carrying nothing.'), nl.
 
 displayOxygenLevel(OxygenLevel).
