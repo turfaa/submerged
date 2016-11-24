@@ -1,15 +1,17 @@
 process('exit') :- menuLoop, !.
+process('quit') :- menuLoop, !.
 process('menu') :- menuLoop, !.
+
 process('n') :- go(n), !, fail.
 process('e') :- go(e), !, fail.
 process('s') :- go(s), !, fail.
 process('w') :- go(w), !, fail.
-process(_) :- write('Invalid command'),nl, !, fail.
+process(_) :- write('Invalid command'), nl, !, fail.
 
 /* Koneksi antar ruangan */
 
-path('Torpedo room', e, 'Sonar room').
-path('Sonar room', w, 'Torpedo room').
+path('Weapons room', e, 'Sonar room').
+path('Sonar room', w, 'Weapons room').
 
 path('Sonar room', n, 'Airlock').
 path('Airlock', s, 'Sonar room').
@@ -20,11 +22,11 @@ path('Crew\'s quarter', n, 'Sonar room').
 path('Sonar room', e, 'Control room').
 path('Control room', w, 'Sonar room').
 
-path('Crew\'s quarter', w, 'Wardroom').
+path('Crew\'s quarters', w, 'Wardroom').
 path('Wardroom', e, 'Crew\'s quarter').
 
 path('Crew\'s quarter', e, 'Storage room').
-path('Storage room', w, 'Crew\'s quarter').
+path('Storage room', w, 'Crew\'s quarters').
 
 path('Control room', e, 'Engine room').
 path('Engine room', w, 'Control room').
@@ -35,12 +37,7 @@ path('Reactor', w, 'Engine room').
 path('Reactor', n, 'Surface').
 path('Surface', s, 'Reactor').
 
-
-go(Direction) :-
-        get_gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory),
-        path(CurrentRoom, Direction, NextRoom),
-		retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory)),
-        set_gameState(IsPowerOn, OxygenLevel, NextRoom, Inventory).
+go(Direction) :- get_currentRoom(CurrentRoom), path(CurrentRoom, Direction, NextRoom), set_currentRoom(NextRoom).
 
 go(_) :-
         write('You can''t go that way.'), nl.	

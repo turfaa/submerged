@@ -1,5 +1,5 @@
 render_gameState :-
-	get_gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory),
+	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory),
 	displayCurrentRoom(CurrentRoom),
 	displayInventory(Inventory),
 	displayOxygenLevel(OxygenLevel),

@@ -20,7 +20,7 @@ menuLoop :-
 
 
 menuAction('start') :-
-	set_gameState(0, 10, 'Torpedo room', []), /* set initial game state */
+	init_gameState(0, 10, 'Weapons room', []), /* set initial game state */
 	gameLoop.
 					   
 menuAction('exit') :- abort.
