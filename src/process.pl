@@ -78,6 +78,11 @@ use('oxygen canister') :- !, get_oxygenLevel(Init),
 								delete(Inventory, 'oxygen canister', NewInventory),
 								set_inventory(NewInventory).
 
+use('explosives')		:- write('Enter the arming code: '),
+							read(user_input, Input), Input = 'PANDORA BOX', !, 
+							write('You activate the explosives.'), set_explosiveTimer(20), nl.
+
+use('explosives')		:- write('Wrong arming code.').
 
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.
