@@ -16,16 +16,16 @@ path('Sonar room', w, 'Weapons room').
 path('Sonar room', n, 'Airlock').
 path('Airlock', s, 'Sonar room').
 
-path('Sonar room', s, 'Crew\'s quarter').
-path('Crew\'s quarter', n, 'Sonar room').
+path('Sonar room', s, 'Crew\'s quarters').
+path('Crew\'s quarters', n, 'Sonar room').
 
 path('Sonar room', e, 'Control room').
 path('Control room', w, 'Sonar room').
 
 path('Crew\'s quarters', w, 'Wardroom').
-path('Wardroom', e, 'Crew\'s quarter').
+path('Wardroom', e, 'Crew\'s quarters').
 
-path('Crew\'s quarter', e, 'Storage room').
+path('Crew\'s quarters', e, 'Storage room').
 path('Storage room', w, 'Crew\'s quarters').
 
 path('Control room', e, 'Engine room').

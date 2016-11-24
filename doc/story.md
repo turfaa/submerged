@@ -6,7 +6,7 @@ You wake up alone in a rapidly sinking submarine, abandoned by the rest of the c
 
 - Primary objective: escape to the surface
 
-    1. Torpedo room: remove barrels blocking the hatch, go to sonar room
+    1. Weapons room: remove barrels blocking the hatch, go to sonar room
     2. Sonar room: see exit hatch jammed, go to control room
     3. Control room: can't use control panel, must turn on power first, crew's quarters locked. Go to engine room
     4. Engine room: see fuse box, turn on backup power, go back to control room
@@ -24,7 +24,7 @@ You wake up alone in a rapidly sinking submarine, abandoned by the rest of the c
 - Secondary objective: (revealed through the radio) destroy the sub to prevent it falling to enemy hands
 
     - In step 5, use radio, secondary objective revealed.
-    - In step 7, first go to wardroom, then see explosives arming code in intelligence documents, then go back to crew's quarters, go to sonar room, go to torpedo room, then set timer on explosives, then go to sonar room, go to crew's quarters, then go to storage room. Continue with step 8 (extra 6 steps)
+    - In step 7, first go to wardroom, then see explosives arming code in intelligence documents, then go back to crew's quarters, go to sonar room, go to weapons room, then set timer on explosives, then go to sonar room, go to crew's quarters, then go to storage room. Continue with step 8 (extra 6 steps)
 
 ## Map
 
@@ -32,7 +32,7 @@ You wake up alone in a rapidly sinking submarine, abandoned by the rest of the c
                  Airlock                                 Surface
                     |                                       |
                     |                                       |
-Torpedo room - Sonar room - Control room - Engine room - Reactor
+Weapons room - Sonar room - Control room - Engine room - Reactor
                     |
                     |
 Wardroom - Crew's quarters - Storage room
@@ -43,11 +43,11 @@ Wardroom - Crew's quarters - Storage room
 
 ## Objects
 
-### Torpedo room
+### Weapons room
 
 - Barrels: initially blocking the hatch, can be moved.
 - Explosives: used to self-destruct the sub (secondary objective), requires explosives arming code
-- Torpedo: -
+- Weapons: -
 
 ### Sonar room
 
