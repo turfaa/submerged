@@ -50,10 +50,12 @@ go(_) :-
 
 
 /* Use Inventory */
+use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), write('\n').
+
 use('fire extinguisher') :- !, get_oxygenLevel(Init), 
 								Nxt is Init-3, 
 								set_oxygenLevel(Nxt), 
-								write('You used the fire extinguisher.'), 
+								write('You use the fire extinguisher.'), 
 								nl, 
 								write('Your Oxygen Level is now '), 
 								write(Nxt), 
@@ -62,6 +64,24 @@ use('fire extinguisher') :- !, get_oxygenLevel(Init),
 								get_inventory(Inventory),
 								delete(Inventory, 'fire extinguisher', NewInventory),
 								set_inventory(NewInventory).
-								
-use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), write('\n').
 
+use('oxygen canister') :- !, get_oxygenLevel(Init), 
+								Tr is Init+5,
+								min(Tr, 10, Nxt),
+								set_oxygenLevel(Nxt), 
+								write('You use the oxygen canister.'), 
+								nl, 
+								write('Your Oxygen Level is now '), 
+								write(Nxt), 
+								nl, nl, 
+								get_inventory(Inventory),
+								delete(Inventory, 'oxygen canister', NewInventory),
+								set_inventory(NewInventory).
+
+
+/* Fungsi pembantu */
+max(X, Y, X) :- X > Y, !.
+max(X, Y, Y).
+
+min(X, Y, X) :- X < Y, !.
+min(X, Y, Y).
