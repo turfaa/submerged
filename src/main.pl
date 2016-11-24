@@ -22,8 +22,8 @@ menuLoop :-
 
 
 menuAction('start') :-
-	gameState_assign(0, 10, 'armory', [], GameState), /* set initial game state */
-	gameLoop(GameState).
+	set_gameState(0, 10, 'Torpedo room', []), /* set initial game state */
+	gameLoop.
 					   
 menuAction('exit') :- abort.
 menuAction('quit') :- abort.
@@ -31,22 +31,20 @@ menuAction(_) :- write('Invalid action.'), nl, !, fail.
 
 /* Main game loop */
 
-gameLoop(GameState) :-
+gameLoop :-
 	repeat,
 	catch((
 
 		/* Render game state */
-		render(GameState), 
+		render_gameState, 
 
 		/* Input */
 		write('> '),
 		read(user_input, Input),
 
 		/* Process input */
-		process(GameState, Input)
+		process(Input)
 
 	), error(syntax_error(_), _), (
 		write('Invalid input.'), nl, fail, !
 	)).
-
-

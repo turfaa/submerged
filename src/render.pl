@@ -1,6 +1,5 @@
-render(GameState) :-
-	gameState_assign(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, GameState),
-	write(GameState), nl,
+render_gameState :-
+	get_gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory),
 	displayCurrentRoom(CurrentRoom),
 	displayInventory(Inventory),
 	displayOxygenLevel(OxygenLevel),
