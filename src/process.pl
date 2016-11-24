@@ -6,7 +6,13 @@ process('n') :- go(n), !, fail.
 process('e') :- go(e), !, fail.
 process('s') :- go(s), !, fail.
 process('w') :- go(w), !, fail.
+
+process(use(X)) :- use(X), !, fail.
+process(take(Object)) :- take(Object), !, fail.
+process(drop(Object)) :- drop(Object), !, fail.
+
 process(_) :- write('Invalid command'), nl, !, fail.
+
 
 /* Koneksi antar ruangan */
 
@@ -49,5 +55,42 @@ go(Direction) :- get_currentRoom(CurrentRoom),
                 get_oxygenLevel(OldOxygen), NewOxygen is OldOxygen - 1, set_oxygenLevel(NewOxygen),
                 set_currentRoom(NextRoom).
 
-go(_) :-
-        write('You can''t go that way.'), nl.
+go(_) :- write('You can''t go that way.'), nl.
+
+
+/* Use Inventory */
+use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), write('\n').
+
+use('fire extinguisher') :- !, get_oxygenLevel(Init),
+								Nxt is Init-3,
+								set_oxygenLevel(Nxt),
+								write('You use the fire extinguisher.'),
+								nl,
+								write('Your Oxygen Level is now '),
+								write(Nxt),
+								write('. (evillaugh)'),
+								nl, nl,
+								get_inventory(Inventory),
+								delete(Inventory, 'fire extinguisher', NewInventory),
+								set_inventory(NewInventory).
+
+use('oxygen canister') :- !, get_oxygenLevel(Init),
+								Tr is Init+5,
+								min(Tr, 10, Nxt),
+								set_oxygenLevel(Nxt),
+								write('You use the oxygen canister.'),
+								nl,
+								write('Your Oxygen Level is now '),
+								write(Nxt),
+								nl, nl,
+								get_inventory(Inventory),
+								delete(Inventory, 'oxygen canister', NewInventory),
+								set_inventory(NewInventory).
+
+
+/* Fungsi pembantu */
+max(X, Y, X) :- X > Y, !.
+max(X, Y, Y).
+
+min(X, Y, X) :- X < Y, !.
+min(X, Y, Y).
