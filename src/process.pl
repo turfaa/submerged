@@ -6,7 +6,11 @@ process('n') :- go(n), !, fail.
 process('e') :- go(e), !, fail.
 process('s') :- go(s), !, fail.
 process('w') :- go(w), !, fail.
+
+process(use(X)) :- use(X), !, fail.
 process(_) :- write('Invalid command'), nl, !, fail.
+
+
 
 /* Koneksi antar ruangan */
 
