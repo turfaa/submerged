@@ -16,9 +16,9 @@ process(_) :- write('Invalid command'), nl, !, fail.
 
 /* Koneksi antar ruangan */
 
-path('Weapons room', e, 'Sonar room') :- get_objects(Objects), member("barrels",Objects).
+path('Weapons room', e, 'Sonar room') :- get_inventory(Objects), member('barrels',Objects).
 
-path('Sonar room', w, 'Weapons room') :- get_objects(Objects), member("barrels",Objects).
+path('Sonar room', w, 'Weapons room') :- get_inventory(Objects), member('barrels',Objects).
 path('Sonar room', n, 'Airlock') :- get_isPowerOn(Power), Power = 1.
 path('Sonar room', s, 'Crew\'s quarters').
 path('Sonar room', e, 'Control room').
@@ -37,7 +37,7 @@ path('Control room', w, 'Sonar room').
 path('Control room', e, 'Engine room').
 
 path('Engine room', w, 'Control room').
-path('Engine room', e, 'Reactor') :- get_objects(Objects), member("crowbar",Objects).
+path('Engine room', e, 'Reactor') :- get_inventory(Objects), member('crowbar',Objects).
 
 path('Reactor', w, 'Engine room').
 path('Reactor', n, 'Surface').
