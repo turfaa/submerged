@@ -1,9 +1,7 @@
-:- include('gamestate.pl').
-:- include('render.pl').
-:- include('process.pl').
 
 /* Main menu loop */
 
+:- initialization(submerged).
 submerged :- menuLoop.
 
 menuLoop :-
