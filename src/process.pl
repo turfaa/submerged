@@ -40,4 +40,4 @@ path('Surface', s, 'Reactor').
 go(Direction) :- get_currentRoom(CurrentRoom), path(CurrentRoom, Direction, NextRoom), set_currentRoom(NextRoom).
 
 go(_) :-
-        write('You can''t go that way.'), nl.	
+	write('You can''t go that way.'), nl.	

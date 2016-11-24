@@ -40,51 +40,35 @@ init_gameState :-
 
 		['sonar display', 'Sonar room', 1],
 		['airlock inner hatch', 'Sonar room', 1],
-		['headphones', 'Sonar room', 0]
+		['headphones', 'Sonar room', 0],
+
+		['airlock outer hatch', 'Airlock', 1],
+
+		['book', 'Crew''s quarters', 0],
+		['canned food', 'Crew''s quarters', 0],
+		['bucket', 'Crew''s quarters', 0],
+		['knife', 'Crew''s quarters', 0],
+
+		['intelligence documents', 'Wardroom', 0],
+		['ship''s log', 'Wardroom', 0],
+
+		['diving equipment', 'Storage room', 0],
+		['oxygen canisters', 'Storage room', 0],
+		['crowbar', 'Storage room', 0],
+
+		['control panel', 'Control room', 1],
+		['map', 'Control room', 0],
+		['radio', 'Control room', 1],
+		['periscope', 'Control room', 1],
+
+		['fuse box', 'Engine room', 1],
+		['reactor status display', 'Engine room', 1],
+		['engine spare parts', 'Engine room', 0],
+		['fire extinguisher', 'Engine room', 0],
+		['oxygen canister', 'Engine room', 0],
+
+		['hole', 'Reactor', 1],
+		['engine', 'Reactor', 1],
+		['dead engineer', 'Reactor', 1]
 
 	])).
-
-/*
-### Airlock
-
-- Airlock outer hatch: permanently jammed.
-
-### Crew quarters
-
-- Book: -
-- Canned food: -
-- Bucket: -
-- Knife: -
-
-### Wardroom
-
-- Intelligence documents: contains explosives arming code
-- Ship's log: story
-
-### Storage room
-
-- Diving equipment: required to survive flooding.
-- Oxygen canisters: replenish oxygen level (if oxygen level too low, the player will die).
-- Crowbar: used to break hole in the reactor.
-
-### Control room
-
-- Control panel: lock/unlock all hatches (except jammed ones). Requires power to function.
-- Map: story
-- Radio: reveals secondary objective. Requires power to function.
-- Periscope: -
-
-### Engine room
-
-- Fuse box: turn on backup power
-- Reactor status display: shows that the reactor room is flooded (can exit through hole).
-- Engine spare parts: -
-- Fire extinguisher: will reduce oxygen level if used.
-- Oxygen canister: replenish oxygen level
-
-### Reactor
-
-- Hole: initially too small to pass through, must equip crowbar to break through.
-- Engine: -
-- Dead engineer: -
-*/
