@@ -11,7 +11,6 @@ process(use(X)) :- use(X), !, fail.
 process(_) :- write('Invalid command'), nl, !, fail.
 
 
-
 /* Koneksi antar ruangan */
 
 path('Weapons room', e, 'Sonar room').
@@ -45,3 +44,9 @@ go(Direction) :- get_currentRoom(CurrentRoom), path(CurrentRoom, Direction, Next
 
 go(_) :-
 	write('You can''t go that way.'), nl.	
+
+
+/* Use Inventory */
+use('fire extinguisher') :- !, get_oxygenLevel(Init), Nxt is Init-3, set_oxygenLevel(Nxt), write('You used the fire extinguisher.'), nl, write('Your Oxygen Level is now '), write(Nxt), write('. (evillaugh)'), nl, nl.
+use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), write('\n').
+
