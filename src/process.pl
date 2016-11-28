@@ -11,6 +11,8 @@ process(use(X)) :- use(X), !, fail.
 process(take(Object)) :- take(Object), !, fail.
 process(drop(Object)) :- drop(Object), !, fail.
 
+process('save') :- open('test.txt', write, Stream), gameState_save(Stream), close(Stream), !, fail.
+
 process(_) :- write('Invalid command'), nl, !, fail.
 
 
@@ -87,6 +89,11 @@ use('oxygen canister') :- !, get_oxygenLevel(Init),
 								delete(Inventory, 'oxygen canister', NewInventory),
 								set_inventory(NewInventory).
 
+use('explosives')		:- write('Enter the arming code: '),
+							read(user_input, Input), Input = 'PANDORA BOX', !, 
+							write('You activate the explosives.'), set_explosiveTimer(20), nl.
+
+use('explosives')		:- write('Wrong arming code.').
 
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.

@@ -1,33 +1,59 @@
-:- dynamic(gameState/5).
+:- dynamic(gameState/6).
 
 set_isPowerOn(Value) :-
-	retract(gameState(_, OxygenLevel, CurrentRoom, Inventory, Objects)),
-	asserta(gameState(Value, OxygenLevel, CurrentRoom, Inventory, Objects)).
+	retract(gameState(_, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer)),
+	asserta(gameState(Value, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer)).
 
 set_oxygenLevel(Value) :- 
-	retract(gameState(IsPowerOn, _, CurrentRoom, Inventory, Objects)),
-	asserta(gameState(IsPowerOn, Value, CurrentRoom, Inventory, Objects)).
+	retract(gameState(IsPowerOn, _, CurrentRoom, Inventory, Objects, ExplosiveTimer)),
+	asserta(gameState(IsPowerOn, Value, CurrentRoom, Inventory, Objects, ExplosiveTimer)).
 
 set_currentRoom(Value) :- 
-	retract(gameState(IsPowerOn, OxygenLevel, _, Inventory, Objects)),
-	asserta(gameState(IsPowerOn, OxygenLevel, Value, Inventory, Objects)).
+	retract(gameState(IsPowerOn, OxygenLevel, _, Inventory, Objects, ExplosiveTimer)),
+	asserta(gameState(IsPowerOn, OxygenLevel, Value, Inventory, Objects, ExplosiveTimer)).
 
 set_inventory(Value) :- 
-	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, _, Objects)),
-	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects)).
+	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, _, Objects, ExplosiveTimer)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer)).
 
 set_objects(Value) :-
-	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, _)),
-	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Value)).
+	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, _, ExplosiveTimer)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Value, ExplosiveTimer)).
 
-get_isPowerOn(Value) :- gameState(Value, _, _, _, _).
-get_oxygenLevel(Value) :- gameState(_, Value, _, _, _).
-get_currentRoom(Value) :- gameState(_, _, Value, _, _).
-get_inventory(Value) :- gameState(_, _, _, Value, _).
-get_objects(Value) :- gameState(_, _, _, _, Value).
+set_explosiveTimer(Value) :-
+	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, _)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, Value)).
 
-/*gameState_load(Stream, GameState).
-gameState_save(Stream, GameState).*/
+get_isPowerOn(Value) :- gameState(Value, _, _, _, _, _).
+get_oxygenLevel(Value) :- gameState(_, Value, _, _, _, _).
+get_currentRoom(Value) :- gameState(_, _, Value, _, _, _).
+get_inventory(Value) :- gameState(_, _, _, Value, _, _).
+get_objects(Value) :- gameState(_, _, _, _, Value, _).
+get_explosiveTimer(Value) :- gameState(_, _, _, _, _, Value).
+	
+/*	
+gameState_load(Stream) :- 
+	readWord(Stream, GameState),
+	write(GameState),
+	asserta(GameState).
+
+readWord(InStream,Chars):- 
+	get_code(InStream,Char),
+	checkCharAndReadRest(Char,Chars,InStream),
+	atom_codes(W,Chars).
+
+checkCharAndReadRest(10,[],_):- !. 
+checkCharAndReadRest(-1,[],_):- !. 
+checkCharAndReadRest(end_of_file,[],_):- !.
+checkCharAndReadRest(Char,[Char|Chars],InStream):-
+	get_code(InStream,NextChar),
+	checkCharAndReadRest(NextChar,Chars,InStream).
+	
+*/
+
+gameState_save(Stream) :- 
+	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer), 
+	write(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer)), write(Stream, .).
 
 /* Initial game state */
 
@@ -53,7 +79,7 @@ init_gameState :-
 		['ship''s log', 'Wardroom', 0],
 
 		['diving equipment', 'Storage room', 0],
-		['oxygen canisters', 'Storage room', 0],
+		['oxygen canister', 'Storage room', 0],
 		['crowbar', 'Storage room', 0],
 
 		['control panel', 'Control room', 1],
@@ -71,7 +97,7 @@ init_gameState :-
 		['engine', 'Reactor', 1],
 		['dead engineer', 'Reactor', 1]
 
-	])).
+	], -1)).
 
 /* Constants */
 

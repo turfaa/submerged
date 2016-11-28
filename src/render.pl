@@ -1,11 +1,12 @@
 render_gameState :-
-	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects),
+	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer),
 	displayCurrentRoom(CurrentRoom),
 	displayStoryRoom(CurrentRoom),
 	displayInventory(Inventory),
 	displayOxygenLevel(OxygenLevel),
 	displayIsPowerOn(IsPowerOn),
-	displayObjects(Objects).
+	displayObjects(Objects),
+	displayExplosiveTimer(ExplosiveTimer).
 
 displayCurrentRoom(CurrentRoom) :- write('You are in the '), write(CurrentRoom), write('.'), nl.
 
@@ -33,3 +34,7 @@ displayMeter(Value, MaxValue) :-
 	displayNChars('#', Value),
 	Remaining is MaxValue - Value,
 	displayNChars('.', Remaining).
+
+displayExplosiveTimer(ExplosiveTimer) :-
+	\+ ExplosiveTimer = 1,
+	!, write('The explosives will detonate in '), write(ExplosiveTimer), write(' second(s).'), nl.
