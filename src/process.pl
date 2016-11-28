@@ -7,9 +7,13 @@ process('e') :- go(e), !, fail.
 process('s') :- go(s), !, fail.
 process('w') :- go(w), !, fail.
 
+process('look') :- !, fail.
+
 process(use(X)) :- use(X), !, fail.
 process(take(Object)) :- take(Object), !, fail.
 process(drop(Object)) :- drop(Object), !, fail.
+
+process(move) :- move, !, fail.
 
 process('save') :- open('test.txt', write, Stream), gameState_save(Stream), close(Stream), !, fail.
 
@@ -18,9 +22,8 @@ process(_) :- write('Invalid command'), nl, !, fail.
 
 /* Koneksi antar ruangan */
 
-path('Weapons room', e, 'Sonar room') :- get_inventory(Objects), member('barrels',Objects).
-
-path('Sonar room', w, 'Weapons room') :- get_inventory(Objects), member('barrels',Objects).
+path('Weapons room', e, 'Sonar room') :- get_objects(Objects), \+ member(['barrels', 'Weapons room', 1],Objects).
+path('Sonar room', w, 'Weapons room').
 path('Sonar room', n, 'Airlock') :- get_isPowerOn(Power), Power = 1.
 path('Sonar room', s, 'Crew\'s quarters').
 path('Sonar room', e, 'Control room').
@@ -39,7 +42,7 @@ path('Control room', w, 'Sonar room').
 path('Control room', e, 'Engine room').
 
 path('Engine room', w, 'Control room').
-path('Engine room', e, 'Reactor') :- get_inventory(Objects), member('crowbar',Objects).
+path('Engine room', e, 'Reactor').
 
 path('Reactor', w, 'Engine room').
 path('Reactor', n, 'Surface').
@@ -90,10 +93,30 @@ use('oxygen canister') :- !, get_oxygenLevel(Init),
 								set_inventory(NewInventory).
 
 use('explosives')		:- write('Enter the arming code: '),
-							read(user_input, Input), Input = 'PANDORA BOX', !, 
-							write('You activate the explosives.'), set_explosiveTimer(20), nl.
+							read(user_input, Input), Input = 'PANDORA BOX', !,
+							write('You activate the explosives.'), set_explosiveTimer(20), nl,
+                            get_inventory(Inventory),
+                            delete(Inventory, 'explosives', NewInventory),
+                            set_inventory(NewInventory).
 
-use('explosives')		:- write('Wrong arming code.').
+use('explosives')		:- !, write('Wrong arming code.').
+
+use('intelligence documents')   :- !, write('The arming code is : ''PANDORA BOX'' (with quotes)'), nl,
+                                      use('Use it wisely.'), nl.
+
+
+/* Memindahkan Barrel*/
+move :- get_currentRoom(CurrentRoom),
+        get_objects(Objects),
+        \+ member(['barrels', CurrentRoom, 1], Objects),
+        !,
+        write('There''s no barrel here.'), nl.
+
+move :- get_currentRoom(CurrentRoom),
+        get_objects(Objects),
+        delete(Objects, ['barrels', CurrentRoom, 1], NewObjects),
+        set_objects(NewObjects),
+        write('Successfully moved the barrels.'), nl.
 
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.
