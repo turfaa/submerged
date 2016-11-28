@@ -11,6 +11,8 @@ process(use(X)) :- use(X), !, fail.
 process(take(Object)) :- take(Object), !, fail.
 process(drop(Object)) :- drop(Object), !, fail.
 
+process('save') :- open('test.txt', write, Stream), gameState_save(Stream), close(Stream), !, fail.
+
 process(_) :- write('Invalid command'), nl, !, fail.
 
 

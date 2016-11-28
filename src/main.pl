@@ -21,7 +21,13 @@ menuLoop :-
 menuAction('start') :-
 	init_gameState, /* set initial game state */
 	gameLoop.
-					   
+
+/*
+menuAction('load') :-
+	open('test.txt', read, Stream), 
+	gameState_load(Stream), 
+	close(Stream). */
+	
 menuAction('exit') :- abort.
 menuAction('quit') :- abort.
 menuAction(_) :- write('Invalid action.'), nl, !, fail.
