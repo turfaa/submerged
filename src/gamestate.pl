@@ -30,30 +30,14 @@ get_currentRoom(Value) :- gameState(_, _, Value, _, _, _).
 get_inventory(Value) :- gameState(_, _, _, Value, _, _).
 get_objects(Value) :- gameState(_, _, _, _, Value, _).
 get_explosiveTimer(Value) :- gameState(_, _, _, _, _, Value).
-
-/*
-gameState_load(Stream) :-
-	readWord(Stream, GameState),
-	write(GameState),
+	
+gameState_load(Stream) :- 
+	read(Stream, GameState),
 	asserta(GameState).
-
-readWord(InStream,Chars):-
-	get_code(InStream,Char),
-	checkCharAndReadRest(Char,Chars,InStream),
-	atom_codes(W,Chars).
-
-checkCharAndReadRest(10,[],_):- !.
-checkCharAndReadRest(-1,[],_):- !.
-checkCharAndReadRest(end_of_file,[],_):- !.
-checkCharAndReadRest(Char,[Char|Chars],InStream):-
-	get_code(InStream,NextChar),
-	checkCharAndReadRest(NextChar,Chars,InStream).
-
-*/
-
-gameState_save(Stream) :-
-	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer),
-	write(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer)), write(Stream, .).
+	
+gameState_save(Stream) :- 
+	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer), 
+	write_term(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer), [quoted(true)]), write(Stream, .).
 
 /* Initial game state */
 

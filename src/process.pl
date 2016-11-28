@@ -1,4 +1,6 @@
-process('exit') :- menuLoop, !.
+process('exit') :- 
+	retract(gameState(Value, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer)),
+	menuLoop, !.
 process('quit') :- menuLoop, !.
 process('menu') :- menuLoop, !.
 
@@ -12,12 +14,15 @@ process('look') :- !, fail.
 process(use(X)) :- use(X), !, fail.
 process(take(Object)) :- take(Object), !, fail.
 process(drop(Object)) :- drop(Object), !, fail.
-
+process(interact(Object)) :- interact(Object), !, fail.
 process(move) :- move, !, fail.
 
-process('save') :- open('test.txt', write, Stream), gameState_save(Stream), close(Stream), !, fail.
+process('save') :- 
+	open('gamestate.txt', write, Stream), 
+	gameState_save(Stream), close(Stream),
+	write('Game saved.'), nl, !, fail.
 
-process(_) :- write('Invalid command'), nl, !, fail.
+process(_) :- write('Invalid command.'), nl, !, fail.
 
 
 /* Koneksi antar ruangan */
@@ -49,11 +54,11 @@ path('Reactor', n, 'Surface').
 
 path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
 
-path_story('Weapons room', e) :- write('It seems like there''s a way, but there are barrels covering it'), nl.
-path_story('Sonar room', w) :- write('It seems like there''s a way, but there are barrels covering it'), nl.
-path_story('Engine room', e) :- write('The hatch is too small'), nl.
-path_story('Sonar room', n) :- write('The door is locked'), nl.
-path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it'), nl.
+path_story('Weapons room', e) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
+path_story('Sonar room', w) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
+path_story('Engine room', e) :- write('The hatch is too small.'), nl.
+path_story('Sonar room', n) :- write('The door is locked.'), nl.
+path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
 
 go(Direction) :- get_currentRoom(CurrentRoom),
                 path(CurrentRoom, Direction, NextRoom),
@@ -120,7 +125,7 @@ move :- get_currentRoom(CurrentRoom),
 
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.
-max(X, Y, Y).
+max(_, Y, Y).
 
 min(X, Y, X) :- X < Y, !.
-min(X, Y, Y).
+min(_, Y, Y).
