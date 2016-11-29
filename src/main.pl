@@ -1,3 +1,8 @@
+:- include('gamestate.pl').
+:- include('render.pl').
+:- include('process.pl').
+:- include('objects.pl').
+
 /* Main menu loop */
 
 :- initialization(submerged).
@@ -47,6 +52,7 @@ gameLoop :-
 		process(Input),
 		
 		\+ gameOver,
+		\+ win,
 		
 		fail
 

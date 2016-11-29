@@ -1,18 +1,24 @@
 render_gameState :- !,
-	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer),
+	render_room, render_status.
+
+render_room :-
+	gameState(_, _, CurrentRoom, _, Objects, _),
 	displayCurrentRoom(CurrentRoom),
 	displayStoryRoom(CurrentRoom),
+	displayObjects(Objects, CurrentRoom).
+	
+render_status :-
+	gameState(IsPowerOn, OxygenLevel, _, Inventory, _, ExplosiveTimer),
 	displayInventory(Inventory),
 	displayOxygenLevel(OxygenLevel),
 	displayIsPowerOn(IsPowerOn),
-	displayObjects(Objects, CurrentRoom),
 	displayExplosiveTimer(ExplosiveTimer).
-
+	
 displayCurrentRoom(CurrentRoom) :- write('You are in the '), write(CurrentRoom), write('.'), nl, nl.
 
 displayStoryRoom(_).
 
-displayInventory(Inventory) :- length(Inventory, X), X > 0, !, write('You are carrying:'), nl, displayList(Inventory), nl, nl.
+displayInventory(Inventory) :- length(Inventory, X), X > 0, !, write('You are carrying:'), nl, displayList(Inventory), nl.
 
 displayInventory([]) :- write('You are carrying nothing.'), nl, nl.
 

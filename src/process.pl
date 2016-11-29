@@ -1,5 +1,5 @@
 process('exit') :- 
-	retract(gameState(Value, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer)),
+	retract(gameState(_, _, _, _, _, _)),
 	menuLoop, !.
 process('quit') :- menuLoop, !.
 process('menu') :- menuLoop, !.
@@ -9,7 +9,8 @@ process('e') :- go(e), !.
 process('s') :- go(s), !.
 process('w') :- go(w), !.
 
-process('look') :- !.
+process('look') :- render_room, !.
+process('stat') :- render_status, !.
 
 process(use(X)) :- use(X), !.
 process(take(Object)) :- take(Object), !.
@@ -47,7 +48,7 @@ path('Engine room', w, 'Control room').
 path('Engine room', e, 'Reactor').
 
 path('Reactor', w, 'Engine room').
-path('Reactor', n, 'Surface').
+path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole','Reactor', 1],Objects).
 
 path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
 
@@ -56,6 +57,7 @@ path_story('Sonar room', w) :- write('It seems like there''s a way, but there ar
 path_story('Engine room', e) :- write('The hatch is too small.'), nl.
 path_story('Sonar room', n) :- write('The door is locked.'), nl.
 path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
+path_story('Reactor', n) :- write('There''s a hole, but it''s too small for you to pass through.'), nl.
 
 go(Direction) :- get_currentRoom(CurrentRoom),
                 path(CurrentRoom, Direction, NextRoom),
@@ -105,8 +107,21 @@ use('explosives')		:- !, write('Wrong arming code.').
 
 use('intelligence documents')   :- !, write('The arming code is : ''PANDORA BOX'' (with quotes)'), nl,
                                       use('Use it wisely.'), nl.
-
-
+									  
+use('crowbar') :- 
+	get_currentRoom(CurrentRoom),
+	get_objects(Objects),
+	\+ member(['hole', CurrentRoom, 1], Objects),
+	write('There''s no hole here.'), nl.
+	
+use('crowbar') :- 
+	get_currentRoom(CurrentRoom),
+	get_objects(Objects),
+	delete(Objects, ['hole', CurrentRoom, 1], NewObjects),
+	set_objects(NewObjects),
+	write('You use the crowbar to widen the hole.'), nl.
+	
+									  
 /* Memindahkan Barrel*/
 move :- get_currentRoom(CurrentRoom),
         get_objects(Objects),
@@ -138,8 +153,17 @@ gameOver :-
 	Oxygen = 0, 
 	write('You ran out of oxygen.'), nl,
 	write('You are starting to lose your consciousness.'), nl, nl,
-	write('Game Over'), nl, nl, menuLoop, !.
-		
+	write('Game Over'), nl, nl, 
+	retract(gameState(_, _, _, _, _, _)),
+	menuLoop, !.
+
+/* Win */
+win :-
+	get_currentRoom(CurrentRoom),
+	CurrentRoom = 'Surface',
+	retract(gameState(_, _, _, _, _, _)),
+	menuLoop, !.
+	
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.
 max(_, Y, Y).
