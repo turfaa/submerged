@@ -64,7 +64,7 @@ Wardroom - Crew's quarters - Storage room
 - Book: -
 - Canned food: -
 - Bucket: -
-- Knife: -
+- Knife: can be used for suicide (game over).
 
 ### Wardroom
 
