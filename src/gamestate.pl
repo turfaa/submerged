@@ -80,8 +80,10 @@ init_gameState :-
 		['knife', 'Crew''s quarters', 0],
 		['dying sailor','Crew''s quarters',0],
 
-		['intelligence documents', 'Wardroom', 0],
-		['ship''s log', 'Wardroom', 0],
+		['document 1', 'Wardroom', 0],
+		['document 2', 'Wardroom', 0],
+		['document 3', 'Wardroom', 0],
+		['sub''s log', 'Wardroom', 0],
 
 		['diving equipment', 'Storage room', 0],
 		['oxygen canister', 'Storage room', 0],
@@ -91,6 +93,7 @@ init_gameState :-
 		['map', 'Control room', 0],
 		['radio', 'Control room', 1],
 		['periscope', 'Control room', 1],
+		['Ship control AI', 'Control room',1],
 
 		['fuse box', 'Engine room', 1],
 		['reactor status display', 'Engine room', 1],
@@ -100,9 +103,11 @@ init_gameState :-
 
 		['hole', 'Reactor', 1],
 		['engine', 'Reactor', 1],
-		['dead engineer', 'Reactor', 1]
+		['dead engineer', 'Reactor', 1],
 
-	], -1, 30, 1, 1, 0)).
+		['ai_defense_activated','untouched',0]
+
+	], -1, 1000, 1, 1, 0)).
 
 /* Constants */
 
