@@ -51,7 +51,7 @@ Wardroom - Crew's quarters - Storage room
 
 ### Sonar room
 
-- Sonar display: shows distance to enemy ship (if enemy is too close, it will fire and kill the player). Requires power to function.
+- Sonar display: shows distance to enemy ship (if enemy is too close, it will fire and kill the player, except if the player has activated the Excalibur ADS AI). Requires power to function.
 - Airlock inner hatch: initially locked.
 - Headphones: -
 
@@ -65,11 +65,12 @@ Wardroom - Crew's quarters - Storage room
 - Canned food: -
 - Bucket: -
 - Knife: -
-- Dying sailor: ngasih password untuk dengerin radio
 
 ### Wardroom
 
-- Intelligence documents: contains explosives arming code
+- Document 1: -
+- Document 2: contains explosives arming code
+- Document 3: contains activation code for Excalibur ADS (automatically intercept attack)
 - Ship's log: story
 
 ### Storage room
@@ -80,9 +81,9 @@ Wardroom - Crew's quarters - Storage room
 
 ### Control room
 
-- Control panel: lock/unlock all hatches (except jammed ones). Requires power to function.
+- Ship control AI: NPC, lock/unlock all hatches (except jammed ones). Requires power to function. Also activate Excalibur ADS (defends the sub from enemy attack) if given correct activation code (found in document in Wardroom).
 - Map: story
-- Radio: reveals secondary objective. Requires power to function.
+- Radio: NPC, reveals secondary objective. Requires power to function.
 - Periscope: -
 
 ### Engine room
