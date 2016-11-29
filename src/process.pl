@@ -140,7 +140,7 @@ use('oxygen canister') :- !, get_oxygenLevel(Init),
 
 use(explosives)		:- 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
 							write('Enter the arming code: '),
-							read(user_input, Input), Input = 'PANDORA BOX', !,
+							read(user_input, Input), Input = 524323, !,
 							write('You activate the explosives.'), set_explosiveTimer(20), nl, nl,
                             get_inventory(Inventory),
                             delete(Inventory, 'explosives', NewInventory),
@@ -148,8 +148,93 @@ use(explosives)		:- 	get_distance(OldDistance), NewDistance is OldDistance - 1, 
 
 use(explosives)		:- !, write('Wrong arming code.'), nl, nl, get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
-use('intelligence documents')   :- !, write('The arming code is : ''PANDORA BOX'' (with quotes)'), nl,
-                                      use('Use it wisely.'), nl, nl, get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+use('document 1') :-
+	write('[ NSV Glasgow Technical Specifications ]'), nl, nl,
+	write('Type: Edinburgh-class attack submarine'), nl,
+	write('Power plant: 1x fission reactor'), nl,
+	write('Length: 81 metres'), nl,
+	write('Maximum depth: 800 metres'), nl,
+	write('Maximum speed: 33 knots surfaced, 28 knots submerged'), nl,
+	write('Crew: 20'), nl,
+	write('Armament: 4x forward torpedo tubes, 4x missile tubes'), nl,
+	write('Control system: AI, semi-autonomous - automatic damage control'), nl,
+	write('[ End of document ]'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	
+use('document 2')   :-
+	write('[ Protocol concerning vessel self-destruction ]'), nl,
+	write('In an emergency situation, the captain of the vessel may order the crew to abandon vessel.'), nl, 
+	write('In this event, the crew must ensure the destruction of the vessel after their evacuation to prevent classified information and technology from being salvaged by the enemy; especially if the vessel is carrying classified documents or equipment.'), nl,
+	write('For this purpose, explosive charges have been installed at the bow of the ship.'), nl,
+	write('A security code is required to arm the timed fuzes on these charges.'), nl,
+	write('The security code for NSV Glasgow''s self-destruction explosives is 524323.'), nl,
+	write('This information must be kept secure at all times.'), nl,
+	write('Only the captain and the senior officer may have access to this document to prevent sabotage.'), nl,
+	write('[ End of document ]'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	
+use('document 3') :-
+	write('[ Memo on #008 - Canterbury Active Defense System ]'), nl,
+	write('NSV Glasgow has been fitted with a prototype active defense system, codename Canterbury.'), nl,
+	write('Although it has not yet been thoroughly field-tested, High Command insisted that this system be fitted as soon as possible due to the high risk of an impending conflict.'), nl,
+	write('This AI-controlled energy-based defense system is able to automatically detect and neutralize threats in a 100 metre radius around the ship. The exact workings are highly classified.'), nl,
+	write('As this system emits a significant amount of easily detectable electromagnetic pulses, it is advisable to only activate this system when the sub is already detected by the enemy and is under attack.'), nl,	
+	write('It''s control system is directly linked to the sub''s control AI.'), nl, 
+	write('Only the captain may authorize its use; the activation code is 293441.'), nl,
+	write('[ End of document ]'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+
+use('sub''s log') :-
+	write('[ NSV Glasgow -- Logs ]'), nl,
+	write('[ November 3rd, 2022 - 10:00 ]'), nl,
+	write('Received transmission from High Command updating alertness status to 1.'), nl,
+	write('Orders are to head back and prepare for the impending conflict.'), nl,
+	write('Changed course towards Port Arthur naval base.'), nl, nl,
+	write('[ November 5th, 2022 - 15:27 ]'), nl,
+	write('Arrived to Port Arthur naval base for resupply.'), nl,
+	write('Restocked food, ammunition and other supplies.'), nl,
+	write('Fitted with classified payload #008 [Excalibur Active Defense System].'), nl,
+	write('Repaired minor damage to outer deck caused by events in entry #35410.'), nl, nl,
+	write('[ November 17th, 2022 - 00:02 ]'), nl,
+	write('Departed from Port Arthur naval base with the 1st Expeditionary Fleet''s ships.'), nl,
+	write('Activated payload #008 once in deep waters; preliminary tests successful.'), nl, nl,
+	write('[ November 17th, 2022 - 07:00 ]'), nl,	
+	write('Split up with the 1st Home Fleet ships.'), nl, nl,
+	write('[ November 18th, 2022 - 10:21 ]'), nl,
+	write('Rendezvous with NSV Canterbury at target area. Starting patrols.'), nl, nl,
+	write('[ November 18th, 2022 - 23:47 ]'), nl,
+	write('Detected the enemy''s 2nd Expeditionary Fleet at extreme range heading towards border.'), nl,
+	write('Entered silent running mode.'), nl,
+	write('Activated #008 [Excalibur].'), nl, nl,
+	write('[ November 19th, 2022 - 01:57 ]'), nl,
+	write('Detected by unknown enemy ASW destroyer, engaged with depth charges.'), nl,
+	write('Slight damage to outer hull.'), nl,
+	write('#008 [Excalibur] successfully intercepted 3 incoming attacks.'), nl,
+	write('NSV Canterbury fired 4 torpedoes at enemy battleship Orion, target moderately damaged.'), nl, nl,
+	write('[ November 19th, 2022 - 02:12 ]'), nl,
+	write('Fired 6 torpedoes at enemy battleship Arcturus, target heavily damaged.'), nl,
+	write('Tracked by at least 3 enemy ships. Taking evasive action.'), nl, 
+	write('#008 [Excalibur] successfully intercepted 8 incoming attacks.'), nl, nl,
+	write('[ November 19th, 2022 - 02:37 ]'), nl,
+	write('Detected anomalous electromagnetic field levels near enemy cruiser Vega.'), nl,
+	write('#008 [Excalibur] intercepted 5 attacks, but failed to intercept 1. Moderate damage to bow section.'), nl, nl,
+	write('[ November 19th, 2022 - 02:40 ]'), nl,
+	write('Enemy cruiser Vega emitted powerful energy burst.'), nl, 
+	write('Stern section hit and heavily damaged and flooded.'), nl,
+	write('Reactor heavily damaged and losing power.'), nl, 
+	write('Sub''s hull integrity compromised.'), nl,
+	write('Activating damage control systems.'), nl, nl,
+	write('[ November 19th, 2022 - 02:42 ]'), nl,
+	write('Flooded compartments successfully sealed and locked, but sub is still sinking.'), nl,
+	write('Failed to seal forward compartments.'), nl,
+	write('Captain gave orders to abandon sub.'), nl, 
+	write('Crew evacuated sub through airlock using emergency equipment; two crew members missing and presumed dead.'), nl, nl,
+	write('[ November 19th, 2022 - 02:45 ]'), nl,
+	write('Forward section hit, Reactor overloaded.'), nl,
+	write('Failover to backup batteries failed.'), nl, 
+	write('System about to lose power completely; initiating shutdown.'), nl,
+	write('[ End of logs ]'), nl, nl,	
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use(crowbar) :-
 	get_currentRoom(CurrentRoom),
@@ -441,7 +526,7 @@ gameOver :-
 win :-
 	get_currentRoom(CurrentRoom),
 	CurrentRoom = 'Surface',
-	write('Congratulations!! You finally reach the surface.'), nl, 
+	winmessage,
 	render_status,
 	get_explosiveTimer(ExplosiveTimer),
 	ExplosiveTimer >= 0,
@@ -453,7 +538,7 @@ win :-
 win :-
 	get_currentRoom(CurrentRoom),
 	CurrentRoom = 'Surface',
-	write('Congratulations!! You finally reach the surface.'), nl, 
+	winmessage,
 	render_status,
 	get_explosiveTimer(ExplosiveTimer),
 	ExplosiveTimer == -1,
@@ -462,6 +547,14 @@ win :-
 	credit,
 	menuLoop, !.	
 
+winmessage :-
+	write('You finally escaped from the doomed sub, and ascend slowly to the surface in your emergency diving equipment.'), nl,
+	write('You reach the surface.'), nl,
+	write('The sky is clear, and moonlight reflected off the somewhat calm sea, dotted with specks of oil and floating debris from the destroyed vessels.'), nl,
+	write('In the distance, you see enemy ships sailing past the border.'), nl,
+	write('The war has just started.'), nl, nl.
+
+	
 credit :-
 	write('This game was created by:'), nl,
 	write('> Jonathan Christopher / 13515001'), nl,

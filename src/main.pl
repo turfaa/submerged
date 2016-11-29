@@ -21,6 +21,12 @@ menuLoop :-
 menuAction('start') :-
 	init_gameState, /* set initial game state */
 	instructions,
+	write('You wake up alone on the cold, hard metal floor of your sub''s weapons room.'), nl, 
+	write('Your head still hurts from the impact of the explosion before.'), nl,
+	write('You tried to slowly stand up, grabbing the pipes on the sides of the room.'), nl,
+	write('Seawater is trickling down from leaks at the wall and pooling to the front.'), nl,
+	write('Only then you realized that the sub is pointing at at angle downwards, and is probably still sinking deeper and deeper.'), nl,
+	write('You know that you don''t have much time to escape to the surface.'), nl, nl,
 	render_gameState,
 	gameLoop.
 

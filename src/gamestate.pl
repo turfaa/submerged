@@ -80,8 +80,10 @@ init_gameState :-
 		['knife', 'Crew''s quarters', 0],
 		['dying sailor','Crew''s quarters',0],
 
-		['intelligence documents', 'Wardroom', 0],
-		['ship''s log', 'Wardroom', 0],
+		['document 1', 'Wardroom', 0],
+		['document 2', 'Wardroom', 0],
+		['document 3', 'Wardroom', 0],
+		['sub''s log', 'Wardroom', 0],
 
 		['diving equipment', 'Storage room', 0],
 		['oxygen canister', 'Storage room', 0],
