@@ -10,7 +10,7 @@ menuLoop :-
 	nl,
 	repeat,
 	catch((
-		write('Enter [start.] to begin, [load.] to load game, [exit.] to quit:'), nl, write('> '),
+		write('Enter [start.] to begin, [load(Filename).] to load game, [exit.] to quit:'), nl, write('> '),
 		read(user_input, Input),
 		menuAction(Input)
 	), error(syntax_error(_), _), (
@@ -20,6 +20,7 @@ menuLoop :-
 
 menuAction('start') :-
 	init_gameState, /* set initial game state */
+	instructions,
 	render_gameState,
 	gameLoop.
 

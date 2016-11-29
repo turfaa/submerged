@@ -1,7 +1,9 @@
 process('exit') :-
 	retract(gameState(_, _, _, _, _, _, _)),
 	menuLoop, !.
-process('quit') :- menuLoop, !.
+process('quit') :- 
+	retract(gameState(_, _, _, _, _, _, _)),
+	menuLoop, !.
 process('menu') :- menuLoop, !.
 
 process('n') :- go(n), !.
@@ -11,6 +13,8 @@ process('w') :- go(w), !.
 
 process('look') :- render_room, !.
 process('stat') :- render_status, !.
+
+process('instructions') :- instructions, !.
 
 process(talk(X)) :- talk(X), !.
 process(use(X)) :- use(X), !.
@@ -26,6 +30,23 @@ process(save(FileName)) :- save(FileName), !.
 
 process(_) :- write('Invalid command.'), nl, nl, !.
 
+/* Instructions */
+instructions :-
+	write('Available commands are:'), nl,
+	write('n, s, e, w.         -- to go in that direction.'), nl,
+	write('take(Object).       -- to pick up an object'), nl,
+	write('drop(Object).       -- to put down an object'), nl,
+	write('use(Object).        -- to use an object'), nl,
+	write('move(Object).       -- to move an object.'), nl,
+	write('switch(Object).     -- to switch on/off switch.'), nl,
+	write('operate(Object).    -- to operate an object.'), nl,
+	write('suicide.            -- to commit suicide.'), nl,
+	write('talk(Object/NPC).   -- to talk to an npc.'), nl,
+	write('stat.               -- to see current status and inventory.'), nl,
+	write('look.               -- to look around in your current room'), nl,
+	write('instructions.       -- to see this message again.'), nl,
+	write('save(Filename).     -- to save current game.'), nl,
+	write('quit.               -- to end the game and go back to main menu.'), nl, nl.
 
 /* Koneksi antar ruangan */
 
@@ -58,8 +79,7 @@ path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
 
 path_story('Weapons room', e) :- write('It seems like there''s a way, but there are barrels covering it.'), nl, nl.
 path_story('Sonar room', w) :- write('It seems like there''s a way, but there are barrels covering it.'), nl, nl.
-path_story('Engine room', e) :- write('The hatch is too small.'), nl, nl.
-path_story('Sonar room', n) :- write('The door is locked.'), nl, nl.
+path_story('Sonar room', n) :- write('The hatch is locked.'), nl, nl.
 path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it.'), nl, nl.
 path_story('Reactor', n) :- write('There''s a hole, but it''s too small for you to pass through.'), nl, nl.
 
@@ -81,7 +101,8 @@ go(Direction) :- get_currentRoom(CurrentRoom),
 go(_) :- write('You can''t go that way.'), nl, nl.
 
 /* Use Inventory */
-use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), nl, nl.
+use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), nl, nl, 
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use('fire extinguisher') :- !, get_oxygenLevel(Init),
 								Nxt is Init-3,
@@ -94,7 +115,8 @@ use('fire extinguisher') :- !, get_oxygenLevel(Init),
 								nl, nl,
 								get_inventory(Inventory),
 								delete(Inventory, 'fire extinguisher', NewInventory),
-								set_inventory(NewInventory).
+								set_inventory(NewInventory), 
+								get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use('oxygen canister') :- !, get_oxygenLevel(Init),
 								Tr is Init+5,
@@ -107,26 +129,29 @@ use('oxygen canister') :- !, get_oxygenLevel(Init),
 								nl, nl,
 								get_inventory(Inventory),
 								delete(Inventory, 'oxygen canister', NewInventory),
-								set_inventory(NewInventory).
+								set_inventory(NewInventory),
+								get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
-use(explosives)		:- write('Enter the arming code: '),
+use(explosives)		:- 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
+							write('Enter the arming code: '),
 							read(user_input, Input), Input = 'PANDORA BOX', !,
 							write('You activate the explosives.'), set_explosiveTimer(20), nl, nl,
                             get_inventory(Inventory),
                             delete(Inventory, 'explosives', NewInventory),
                             set_inventory(NewInventory).
 
-use(explosives)		:- !, write('Wrong arming code.'), nl, nl.
+use(explosives)		:- !, write('Wrong arming code.'), nl, nl, get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use('intelligence documents')   :- !, write('The arming code is : ''PANDORA BOX'' (with quotes)'), nl,
-                                      use('Use it wisely.'), nl, nl.
+                                      use('Use it wisely.'), nl, nl, get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use(crowbar) :-
 	get_currentRoom(CurrentRoom),
 	get_objects(Objects),
 	delete(Objects, ['hole', CurrentRoom, 1], NewObjects),
 	set_objects(NewObjects),
-	write('You use the crowbar to widen the hole.'), nl, nl.
+	write('You use the crowbar to widen the hole.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use(map) :-
 	write('                 Airlock                                 Surface'), nl,
@@ -136,11 +161,13 @@ use(map) :-
 	write('                    |'), nl,
 	write('                    |'), nl,
 	write('Wardroom - Crew''s quarters - Storage room'), nl, nl,
-	write('<< Forward  Backward >>'), nl, nl.
-
+	write('<< Forward  Backward >>'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	
 use(Object) :-
-	write('There''s no use of this '), write(Object), write(' yet.'), nl,nl.
-
+	write('There''s no use of this '), write(Object), write(' yet.'), nl,nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	
 /* Memindahkan Barrel*/
 move(Object) :-
 		get_currentRoom(CurrentRoom),
@@ -148,17 +175,20 @@ move(Object) :-
         \+ member([Object, CurrentRoom, _], Objects),
         !,
         write('There''s no '),
-		write(Object), write(' here'), nl, nl.
+		write(Object), write(' here'), nl, nl,
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 move(barrels) :-
 		get_currentRoom(CurrentRoom),
         get_objects(Objects),
         delete(Objects, ['barrels', CurrentRoom, 1], NewObjects),
         set_objects(NewObjects),
-        write('You successfully moved the barrels.'), nl, nl.
-
-move(Object) :-
-		write('You cannot move '), write(Object), write('.'), nl, nl.
+        write('You successfully moved the barrels.'), nl, nl,
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+		
+move(Object) :- 
+		write('You cannot move '), write(Object), write('.'), nl, nl,
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 /* Radio : Mendapatkan informasi tentang secondary objective */
 talk(Object) :-
@@ -167,7 +197,8 @@ talk(Object) :-
         \+ member([Object, CurrentRoom, _], Objects),
         !,
         write('There''s no '),
-		write(Object), write(' here'), nl, nl.
+		write(Object), write(' here'), nl, nl,
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 talk(radio) :-
 		get_currentRoom(CurrentRoom),
@@ -175,7 +206,8 @@ talk(radio) :-
 		Power = 0,
 		get_objects(Objects), member(['radio', CurrentRoom, 1], Objects),
 		!,
-		write('You found a radio, but there''s no power.'), nl, nl.
+		write('You found a radio, but there''s no power.'), nl, nl,
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 talk(radio) :-
 		get_currentRoom(CurrentRoom),
@@ -185,15 +217,17 @@ talk(radio) :-
 		\+ member(['dying sailor',_,_], Objects),
 		!,
 		write('You enter the radio''s password'), nl,
-		write('Your secondary objective is destroy this submarine'), nl, nl.
-
+		write('Your secondary objective is destroy this submarine'), nl, nl,
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+		
 talk(radio) :-
 		get_currentRoom(CurrentRoom),
 		get_isPowerOn(Power),
 		Power = 1,
 		get_objects(Objects), member(['radio', CurrentRoom, 1], Objects),
 		!,
-		write('You found a radio, but it''s password protected'), nl, nl.
+		write('You found a radio, but it''s password protected'), nl, nl,
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 talk('dying sailor') :-
 		get_currentRoom(CurrentRoom),
@@ -201,13 +235,14 @@ talk('dying sailor') :-
 		!,
 		write('Please do something for me, hear the radio. This is the password'), nl,
 		write('The sailor died'), nl, nl,
-		delete(Objects, ['dying sailor', CurrentRoom, 0], NewObjects), set_objects(NewObjects).
+		delete(Objects, ['dying sailor', CurrentRoom, 0], NewObjects), set_objects(NewObjects),
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
-talk(Object) :-
-		write('You cannot talk to '), write(Object), write('.'), nl, nl.
+talk(Object) :- 
+		write('You cannot talk to '), write(Object), write('.'), nl, nl, 
+		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 /* Ketika hidup sudah mulai keras, saatnya untuk putus asa dan mengakhiri semua ini */
-
 suicide :-
 	get_inventory(Inventory), member('knife', Inventory),
 	!,
@@ -230,25 +265,35 @@ switch(Object) :-
 	\+ member([Object, CurrentRoom, _], Objects),
 	!,
 	write('There''s no '),
-	write(Object), write(' here.'), nl, nl.
-
-switch('fuse box') :-
+	write(Object), write(' here.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	
+switch('fuse box') :- 
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 0,
 	set_isPowerOn(1),
 	write('You turn on the power.'),
-	nl, nl.
+	nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 switch('fuse box') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 1,
 	set_isPowerOn(0),
 	write('You turn off the power.'),
-	nl, nl.
+	nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 switch(Object) :-
 	write('You cannot switch '),
-	write(Object), write('.'), nl, nl.
+	write(Object), write('.'), nl, nl,
+	nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+
+switch(Object) :-
+	write('You cannot switch '),
+	write(Object), write('.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 /* Operate */
 operate(Object) :-
@@ -257,26 +302,30 @@ operate(Object) :-
 	\+ member([Object, CurrentRoom, _], Objects),
 	!,
 	write('There''s no '),
-	write(Object), write(' here.'), nl, nl.
+	write(Object), write(' here.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 operate('sonar display') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 0,
 	write('There''s no power.'),
-	nl, nl.
+	nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 operate('sonar display') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 1,
 	get_distance(Distance),
-	write('Distance with enemy''s sub is '), write(Distance), write('.'), nl,
-	write('It''s getting closer.'), nl, nl.
+	write('Distance with enemy''s sub is '), write(Distance), write('.'), nl, 
+	write('It''s getting closer.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 operate('control panel') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 0,
 	write('There''s no power.'),
-	nl, nl.
+	nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 operate('control panel') :-
 	get_isPowerOn(IsPowerOn),
@@ -285,7 +334,8 @@ operate('control panel') :-
 	member(['airlock inner hatch', 'Sonar room', 1], Objects),
 	delete(Objects, ['airlock inner hatch', 'Sonar room', 1], NewObjects),
 	set_objects(NewObjects),
-	write('You unlock all hatches.'), nl, nl.
+	write('You unlock all hatches.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 operate('control panel') :-
 	get_isPowerOn(IsPowerOn),
@@ -294,13 +344,14 @@ operate('control panel') :-
 	\+member(['airlock inner hatch', 'Sonar room', 1], Objects),
 	append(Objects, [['airlock inner hatch', 'Sonar room', 1]], NewObjects),
 	set_objects(NewObjects),
-	write('You lock all hatches.'), nl, nl.
-
+	write('You lock all hatches.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 operate(Object) :-
 	write('You cannot operate '),
-	write(Object), write('.'), nl, nl.
-
+	write(Object), write('.'), nl, nl,
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	
 /* Save and Load */
 save(FileName) :-
 	open(FileName, write, Stream),

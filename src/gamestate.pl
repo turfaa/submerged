@@ -87,7 +87,7 @@ init_gameState :-
 		['engine', 'Reactor', 1],
 		['dead engineer', 'Reactor', 1]
 
-	], -1, 20)).
+	], -1, 30)).
 
 /* Constants */
 
