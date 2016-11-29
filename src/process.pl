@@ -27,7 +27,7 @@ process(_) :- write('Invalid command.'), nl, !.
 
 /* Koneksi antar ruangan */
 
-path('Weapons room', e, 'Sonar room') :- get_objects(Objects), \+ member(['barrels', 'Weapons room', 1],Objects).
+path('Weapons room', e, 'Sonar room') :- get_objects(Objects), \+ member(['barrels', 'Weapons room', 1],Objects), !.
 path('Sonar room', w, 'Weapons room').
 path('Sonar room', n, 'Airlock') :- get_isPowerOn(Power), Power = 1.
 path('Sonar room', s, 'Crew\'s quarters').
@@ -61,10 +61,17 @@ path_story('Sonar room', n) :- write('The door is locked.'), nl.
 path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
 path_story('Reactor', n) :- write('There''s a hole, but it''s too small for you to pass through.'), nl.
 
+
+go(Direction) :- get_currentRoom(CurrentRoom),
+                 path(CurrentRoom, Direction, NextRoom),
+                 CurrentRoom == NextRoom.
+
 go(Direction) :- get_currentRoom(CurrentRoom),
                 path(CurrentRoom, Direction, NextRoom),
+                \+ CurrentRoom == NextRoom,
                 get_oxygenLevel(OldOxygen), NewOxygen is OldOxygen - 1, set_oxygenLevel(NewOxygen),
                 set_currentRoom(NextRoom).
+
 
 go(_) :- write('You can''t go that way.'), nl.
 
@@ -132,9 +139,9 @@ use('map') :-
 	write('                    |'), nl,
 	write('Wardroom - Crew''s quarters - Storage room'), nl, nl,
 	write('<< Forward  Backward >>'), nl, nl.
-		
+
 /* Memindahkan Barrel*/
-move(Object) :- 
+move(Object) :-
 		get_currentRoom(CurrentRoom),
         get_objects(Objects),
         \+ member([Object, CurrentRoom, _], Objects),
@@ -142,14 +149,14 @@ move(Object) :-
         write('There''s no '),
 		write(Object), write(' here'), nl.
 
-move('barrels') :- 
+move('barrels') :-
 		get_currentRoom(CurrentRoom),
         get_objects(Objects),
         delete(Objects, ['barrels', CurrentRoom, 1], NewObjects),
         set_objects(NewObjects),
-        write('Successfully moved the barrels.'), nl.		
-		
-move(Object) :- 
+        write('Successfully moved the barrels.'), nl.
+
+move(Object) :-
 		write('You cannot move '), write(Object), write('.'), nl.
 
 /* Radio : Mendapatkan informasi tentang secondary objective */
@@ -192,20 +199,20 @@ switch(Object) :-
 	write('You cannot switch '),
 	write(Object), write('.'), nl.
 
-switch('fuse box') :- 
+switch('fuse box') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 0,
 	set_isPowerOn(1),
 	write('You turn on the power.'),
 	nl.
 
-switch('fuse box') :- 
+switch('fuse box') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 1,
 	set_isPowerOn(0),
 	write('You turn off the power.'),
-	nl.	
-		
+	nl.
+
 /* Save and Load */
 save(FileName) :-
 	open(FileName, write, Stream),
