@@ -20,10 +20,12 @@ menuLoop :-
 
 menuAction('start') :-
 	init_gameState, /* set initial game state */
+	render_gameState,
 	gameLoop.
 
 menuAction(load(FileName)) :-
 	loadGame(FileName),
+	render_gameState,
 	gameLoop.
 
 menuAction('exit') :- abort.
@@ -35,9 +37,6 @@ menuAction(_) :- write('Invalid action.'), nl, !, fail.
 gameLoop :-
 	repeat,
 	catch((
-
-		/* Render game state */
-		render_gameState,
 
 		/* Input */
 		write('> '),
