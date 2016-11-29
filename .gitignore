@@ -5,6 +5,7 @@ bin/*
 # Latex temporary files
 *.log
 *.aux
+*.pdf
 
 # Sublime Text files
 *.sublime-*
