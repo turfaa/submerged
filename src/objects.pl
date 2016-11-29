@@ -9,7 +9,7 @@ take(Object) :-
 	get_inventory(Inventory),
 	length(Inventory, Size),
 	Size == 3,
-	write('Your inventory is full'), nl, nl,
+	write('Your inventory is full.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 take(Object) :-

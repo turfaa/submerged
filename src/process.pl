@@ -41,11 +41,11 @@ instructions :-
 	write('move(Object).       -- to move an object.'), nl,
 	write('switch(Object).     -- to switch on/off switch.'), nl,
 	write('operate(Object).    -- to operate an object.'), nl,
-	write('check.			   -- to check some status display'),nl,
+	write('check,              -- to check some status display.'),nl,
 	write('suicide.            -- to commit suicide.'), nl,
 	write('talk(Object/NPC).   -- to talk to an npc.'), nl,
 	write('stat.               -- to see current status and inventory.'), nl,
-	write('look.               -- to look around in your current room'), nl,
+	write('look.               -- to look around in your current room.'), nl,
 	write('instructions.       -- to see this message again.'), nl,
 	write('save(Filename).     -- to save current game.'), nl,
 	write('quit.               -- to end the game and go back to main menu.'), nl, nl.
@@ -69,13 +69,13 @@ path('Wardroom', e, 'Crew\'s quarters') :- !.
 path('Storage room', w, 'Crew\'s quarters') :- !.
 
 path('Control room', w, 'Sonar room') :- !.
-path('Control room', e, 'Engine room') :- !, write('Warning: The room in the east of this room is flooded.'), nl.
+path('Control room', e, 'Engine room') :- !.
 
 path('Engine room', w, 'Control room') :- !.
 path('Engine room', e, 'Reactor') :- get_reactorLocked(IsLocked), IsLocked == 0, !, set_flooded(1), nl, flooding.
 
 path('Reactor', w, 'Engine room') :- !.
-path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole',CurrentRoom, 1],Objects).
+path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole','Reactor', 1],Objects), !.
 
 path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
 
@@ -91,6 +91,7 @@ go(Direction) :- get_currentRoom(CurrentRoom),
 go(Direction) :- get_currentRoom(CurrentRoom),
                 path(CurrentRoom, Direction, NextRoom),
 				\+ CurrentRoom == NextRoom,
+				\+ NextRoom == 'Surface',
                 get_oxygenLevel(OldOxygen), NewOxygen is OldOxygen - 1, set_oxygenLevel(NewOxygen),
                 set_currentRoom(NextRoom),
 				get_explosiveTimer(OldExplosiveTimer),
@@ -99,6 +100,10 @@ go(Direction) :- get_currentRoom(CurrentRoom),
 				get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
 				render_gameState, !.
 
+go(Direction) :- get_currentRoom(CurrentRoom),
+                path(CurrentRoom, Direction, NextRoom),
+				set_currentRoom(NextRoom).				
+				
 go(_) :- write('You can''t go that way.'), nl, nl.
 
 /* Use Inventory */
@@ -164,6 +169,12 @@ use(map) :-
 	write('Wardroom - Crew''s quarters - Storage room'), nl, nl,
 	write('<< Forward  Backward >>'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+
+use('diving equipment') :-
+	write('You wear the diving equipment.'), nl, nl,
+	get_inventory(Inventory), 
+	delete(Inventory, 'diving equipment', NewInventory),
+	set_inventory(NewInventory).
 
 use(Object) :-
 	write('There''s no use of this '), write(Object), write(' yet.'), nl,nl,
@@ -369,7 +380,7 @@ flooding :-
     get_inventory(Inventory),
     get_objects(Objects),
     \+ member('diving equipment', Inventory),
-    \+ member(['diving equipment', _, _], Objects).
+    \+ member(['diving equipment', _, _], Objects), !.
 
 flooding :-
     write('Your submarine is flooded, and you can''t go out of it.'), nl,
@@ -423,9 +434,34 @@ gameOver :-
 win :-
 	get_currentRoom(CurrentRoom),
 	CurrentRoom = 'Surface',
+	write('Congratulations!! You finally reach the surface.'), nl, 
+	render_status,
+	get_explosiveTimer(ExplosiveTimer),
+	ExplosiveTimer >= 0,
+	write('Secondary objective - destroy submarine completed.'), nl, nl,
 	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
+	credit,
 	menuLoop, !.
 
+win :-
+	get_currentRoom(CurrentRoom),
+	CurrentRoom = 'Surface',
+	write('Congratulations!! You finally reach the surface.'), nl, 
+	render_status,
+	get_explosiveTimer(ExplosiveTimer),
+	ExplosiveTimer == -1,
+	write('You didn''t do the secondary objective'), nl, nl,
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
+	credit,
+	menuLoop, !.	
+
+credit :-
+	write('This game was created by:'), nl,
+	write('> Jonathan Christopher / 13515001'), nl,
+	write('> Jordhy Fernando / 13515004'), nl,
+	write('> Jauhar Arifin / 13515049'), nl,
+	write('> Turfa Auliarachman / 13515133'), nl, nl.
+	
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.
 max(_, Y, Y).
