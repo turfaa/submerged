@@ -1,7 +1,7 @@
 process('exit') :-
 	retract(gameState(_, _, _, _, _, _, _)),
 	menuLoop, !.
-process('quit') :- 
+process('quit') :-
 	retract(gameState(_, _, _, _, _, _, _)),
 	menuLoop, !.
 process('menu') :- menuLoop, !.
@@ -67,10 +67,11 @@ path('Wardroom', e, 'Crew\'s quarters') :- !.
 path('Storage room', w, 'Crew\'s quarters') :- !.
 
 path('Control room', w, 'Sonar room') :- !.
-path('Control room', e, 'Engine room') :- !.
+path('Control room', e, 'Engine room') :- !, write('Warning: The room in the east of this room is flooded.'), nl.
 
 path('Engine room', w, 'Control room') :- !.
-path('Engine room', e, 'Reactor') :- !.
+path('Engine room', e, 'Reactor') :- get_reactorLocked(IsLocked), IsLocked == 1, !, write('The room is locked.'), nl.
+path('Engine room', e, 'Reactor') :- !, set_flooded(1), nl.
 
 path('Reactor', w, 'Engine room') :- !.
 path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole','Reactor', 1],Objects).
@@ -84,8 +85,9 @@ path_story('Airlock', s) :- write('It seems like there''s a way, but there are b
 path_story('Reactor', n) :- write('There''s a hole, but it''s too small for you to pass through.'), nl, nl.
 
 go(Direction) :- get_currentRoom(CurrentRoom),
-                 path(CurrentRoom, Direction, NextRoom),
-                 CurrentRoom == NextRoom.
+                CurrentRoom == NextRoom,
+                 path(CurrentRoom, Direction, NextRoom)
+                 .
 
 go(Direction) :- get_currentRoom(CurrentRoom),
                 path(CurrentRoom, Direction, NextRoom),
@@ -101,7 +103,7 @@ go(Direction) :- get_currentRoom(CurrentRoom),
 go(_) :- write('You can''t go that way.'), nl, nl.
 
 /* Use Inventory */
-use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), nl, nl, 
+use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write('You have no '), write(Barang), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use('fire extinguisher') :- !, get_oxygenLevel(Init),
@@ -115,7 +117,7 @@ use('fire extinguisher') :- !, get_oxygenLevel(Init),
 								nl, nl,
 								get_inventory(Inventory),
 								delete(Inventory, 'fire extinguisher', NewInventory),
-								set_inventory(NewInventory), 
+								set_inventory(NewInventory),
 								get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 use('oxygen canister') :- !, get_oxygenLevel(Init),
@@ -163,11 +165,11 @@ use(map) :-
 	write('Wardroom - Crew''s quarters - Storage room'), nl, nl,
 	write('<< Forward  Backward >>'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
-	
+
 use(Object) :-
 	write('There''s no use of this '), write(Object), write(' yet.'), nl,nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
-	
+
 /* Memindahkan Barrel*/
 move(Object) :-
 		get_currentRoom(CurrentRoom),
@@ -185,8 +187,8 @@ move(barrels) :-
         set_objects(NewObjects),
         write('You successfully moved the barrels.'), nl, nl,
 		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
-		
-move(Object) :- 
+
+move(Object) :-
 		write('You cannot move '), write(Object), write('.'), nl, nl,
 		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
@@ -219,7 +221,7 @@ talk(radio) :-
 		write('You enter the radio''s password'), nl,
 		write('Your secondary objective is destroy this submarine'), nl, nl,
 		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
-		
+
 talk(radio) :-
 		get_currentRoom(CurrentRoom),
 		get_isPowerOn(Power),
@@ -238,8 +240,8 @@ talk('dying sailor') :-
 		delete(Objects, ['dying sailor', CurrentRoom, 0], NewObjects), set_objects(NewObjects),
 		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
-talk(Object) :- 
-		write('You cannot talk to '), write(Object), write('.'), nl, nl, 
+talk(Object) :-
+		write('You cannot talk to '), write(Object), write('.'), nl, nl,
 		get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
 /* Ketika hidup sudah mulai keras, saatnya untuk putus asa dan mengakhiri semua ini */
@@ -267,8 +269,8 @@ switch(Object) :-
 	write('There''s no '),
 	write(Object), write(' here.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
-	
-switch('fuse box') :- 
+
+switch('fuse box') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 0,
 	set_isPowerOn(1),
@@ -316,7 +318,7 @@ operate('sonar display') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 1,
 	get_distance(Distance),
-	write('Distance with enemy''s sub is '), write(Distance), write('.'), nl, 
+	write('Distance with enemy''s sub is '), write(Distance), write('.'), nl,
 	write('It''s getting closer.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
 
@@ -330,28 +332,33 @@ operate('control panel') :-
 operate('control panel') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 1,
-	get_objects(Objects),
-	member(['airlock inner hatch', 'Sonar room', 1], Objects),
-	delete(Objects, ['airlock inner hatch', 'Sonar room', 1], NewObjects),
-	set_objects(NewObjects),
+    get_airlockLocked(Airlock),
+    get_reactorLocked(Reactor),
+    AirLock == 1,
+    Reactor == 1,
 	write('You unlock all hatches.'), nl, nl,
-	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
+    set_airlockLocked(0),
+    set_reactorLocked(0).
 
 operate('control panel') :-
 	get_isPowerOn(IsPowerOn),
 	IsPowerOn = 1,
-	get_objects(Objects),
-	\+member(['airlock inner hatch', 'Sonar room', 1], Objects),
-	append(Objects, [['airlock inner hatch', 'Sonar room', 1]], NewObjects),
-	set_objects(NewObjects),
+    get_airlockLocked(Airlock),
+    get_reactorLocked(Reactor),
+    AirLock == 0,
+    Reactor == 0,
 	write('You lock all hatches.'), nl, nl,
-	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
+    get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
+    set_airlockLocked(1),
+    set_reactorLocked(1).
 
 operate(Object) :-
 	write('You cannot operate '),
 	write(Object), write('.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
-	
+
 /* Save and Load */
 save(FileName) :-
 	open(FileName, write, Stream),

@@ -1,48 +1,63 @@
-:- dynamic(gameState/7).
+:- dynamic(gameState/10).
 
 set_isPowerOn(Value) :-
-	retract(gameState(_, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance)),
-	asserta(gameState(Value, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance)).
+	retract(gameState(_, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)),
+	asserta(gameState(Value, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)).
 
 set_oxygenLevel(Value) :-
-	retract(gameState(IsPowerOn, _, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance)),
-	asserta(gameState(IsPowerOn, Value, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance)).
+	retract(gameState(IsPowerOn, _, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)),
+	asserta(gameState(IsPowerOn, Value, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)).
 
 set_currentRoom(Value) :-
-	retract(gameState(IsPowerOn, OxygenLevel, _, Inventory, Objects, ExplosiveTimer, Distance)),
-	asserta(gameState(IsPowerOn, OxygenLevel, Value, Inventory, Objects, ExplosiveTimer, Distance)).
+	retract(gameState(IsPowerOn, OxygenLevel, _, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)),
+	asserta(gameState(IsPowerOn, OxygenLevel, Value, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)).
 
 set_inventory(Value) :-
-	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, _, Objects, ExplosiveTimer, Distance)),
-	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer, Distance)).
+	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, _, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)).
 
 set_objects(Value) :-
-	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, _, ExplosiveTimer, Distance)),
-	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Value, ExplosiveTimer, Distance)).
+	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, _, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Value, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded)).
 
 set_explosiveTimer(Value) :-
-	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, _, Distance)),
-	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, Value, Distance)).
+	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, _, Distance, ReactorLocked, AirlockLocked, Flooded)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, Value, Distance, ReactorLocked, AirlockLocked, Flooded)).
 
 set_distance(Value) :-
-	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, _)),
-	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Value)).	
-	
-get_isPowerOn(Value) :- gameState(Value, _, _, _, _, _, _).
-get_oxygenLevel(Value) :- gameState(_, Value, _, _, _, _, _).
-get_currentRoom(Value) :- gameState(_, _, Value, _, _, _, _).
-get_inventory(Value) :- gameState(_, _, _, Value, _, _, _).
-get_objects(Value) :- gameState(_, _, _, _, Value, _, _).
-get_explosiveTimer(Value) :- gameState(_, _, _, _, _, Value, _).
-get_distance(Value) :- gameState(_, _, _, _, _, _, Value).
+	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, _, ReactorLocked, AirlockLocked, Flooded)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Value, ReactorLocked, AirlockLocked, Flooded)).
+
+set_reactorLocked(Value) :-
+    retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, _, AirlockLocked, Flooded)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, Value, AirlockLocked, Flooded)).
+
+set_airlockLocked(Value) :-
+    retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, _, Flooded)),
+    asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, Value, Flooded)).
+
+set_flooded(Value) :-
+    retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, _)),
+	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Value)).
+
+get_isPowerOn(Value) :- gameState(Value, _, _, _, _, _, _, _, _, _).
+get_oxygenLevel(Value) :- gameState(_, Value, _, _, _, _, _, _, _, _).
+get_currentRoom(Value) :- gameState(_, _, Value, _, _, _, _, _, _, _).
+get_inventory(Value) :- gameState(_, _, _, Value, _, _, _, _, _, _).
+get_objects(Value) :- gameState(_, _, _, _, Value, _, _, _, _, _).
+get_explosiveTimer(Value) :- gameState(_, _, _, _, _, Value, _, _, _, _).
+get_distance(Value) :- gameState(_, _, _, _, _, _, Value, _, _, _).
+get_reactorLocked(Value) :- gameState(_, _, _, _, _, _, _, Value, _, _).
+get_airlockLocked(Value) :- gameState(_, _, _, _, _, _,  _, _, Value, _).
+get_flooded(Value) :- gameState(_, _, _, _, _, _, _, _, _, Value).
 
 gameState_load(Stream) :-
 	read(Stream, GameState),
 	asserta(GameState).
 
 gameState_save(Stream) :-
-	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance),
-	write_term(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance), [quoted(true)]), write(Stream, .).
+	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded),
+	write_term(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer, Distance, ReactorLocked, AirlockLocked, Flooded), [quoted(true)]), write(Stream, .).
 
 /* Initial game state */
 
@@ -87,7 +102,7 @@ init_gameState :-
 		['engine', 'Reactor', 1],
 		['dead engineer', 'Reactor', 1]
 
-	], -1, 30)).
+	], -1, 30, 1, 1, 0)).
 
 /* Constants */
 

@@ -2,18 +2,18 @@ render_gameState :- !,
 	render_room, render_status.
 
 render_room :-
-	gameState(_, _, CurrentRoom, _, Objects, _, _),
+	gameState(_, _, CurrentRoom, _, Objects, _, _, _, _, _),
 	displayCurrentRoom(CurrentRoom),
 	displayStoryRoom(CurrentRoom),
 	displayObjects(Objects, CurrentRoom).
-	
+
 render_status :-
-	gameState(IsPowerOn, OxygenLevel, _, Inventory, _, ExplosiveTimer, _),
+	gameState(IsPowerOn, OxygenLevel, _, Inventory, _, ExplosiveTimer, _, _, _, _),
 	displayInventory(Inventory),
 	displayOxygenLevel(OxygenLevel),
 	displayIsPowerOn(IsPowerOn),
 	displayExplosiveTimer(ExplosiveTimer).
-	
+
 displayCurrentRoom(CurrentRoom) :- write('You are in the '), write(CurrentRoom), write('.'), nl, nl.
 
 displayStoryRoom(_).
@@ -45,7 +45,7 @@ displayMeter(Value, MaxValue) :-
 	Remaining is MaxValue - Value,
 	displayNChars('.', Remaining).
 
-/* Untuk menampilkan isi List */	
+/* Untuk menampilkan isi List */
 displayList([]) :- nl.
 displayList([X|Y]) :-
 	write(X), nl, displayList(Y).
