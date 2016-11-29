@@ -22,7 +22,7 @@ menuAction('start') :-
 	init_gameState, /* set initial game state */
 	gameLoop.
 
-menuAction(loadGame(FileName)) :-
+menuAction(load(FileName)) :-
 	loadGame(FileName),
 	gameLoop.
 
@@ -46,8 +46,8 @@ gameLoop :-
 		/* Process input */
 		process(Input),
 
-		\+ gameOver,
 		\+ win,
+		\+ gameOver,
 
 		fail
 

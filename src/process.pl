@@ -16,9 +16,11 @@ process(talk(X)) :- talk(X), !.
 process(use(X)) :- use(X), !.
 process(take(Object)) :- take(Object), !.
 process(drop(Object)) :- drop(Object), !.
-process(move) :- move, !.
+process(move(Object)) :- move(Object), !.
 
-process(saveGame(FileName)) :- saveGame(FileName), !.
+process(switch(Object)) :- switch(Object), !.
+
+process(save(FileName)) :- save(FileName), !.
 
 process(_) :- write('Invalid command.'), nl, !.
 
@@ -121,19 +123,34 @@ use('crowbar') :-
 	set_objects(NewObjects),
 	write('You use the crowbar to widen the hole.'), nl.
 
-
+use('map') :-
+	write('                 Airlock                                 Surface'), nl,
+	write('                    |                                       |'), nl,
+	write('                    |                                       |'), nl,
+	write('Weapons room - Sonar room - Control room - Engine room - Reactor'), nl,
+	write('                    |'), nl,
+	write('                    |'), nl,
+	write('Wardroom - Crew''s quarters - Storage room'), nl, nl,
+	write('<< Forward  Backward >>'), nl, nl.
+		
 /* Memindahkan Barrel*/
-move :- get_currentRoom(CurrentRoom),
+move(Object) :- 
+		get_currentRoom(CurrentRoom),
         get_objects(Objects),
-        \+ member(['barrels', CurrentRoom, 1], Objects),
+        \+ member([Object, CurrentRoom, _], Objects),
         !,
-        write('There''s no barrel here.'), nl.
+        write('There''s no '),
+		write(Object), write(' here'), nl.
 
-move :- get_currentRoom(CurrentRoom),
+move('barrels') :- 
+		get_currentRoom(CurrentRoom),
         get_objects(Objects),
         delete(Objects, ['barrels', CurrentRoom, 1], NewObjects),
         set_objects(NewObjects),
-        write('Successfully moved the barrels.'), nl.
+        write('Successfully moved the barrels.'), nl.		
+		
+move(Object) :- 
+		write('You cannot move '), write(Object), write('.'), nl.
 
 /* Radio : Mendapatkan informasi tentang secondary objective */
 talk(radio) :-
@@ -160,8 +177,37 @@ talk('dying sailor') :-
 		write('The sailor died'), nl,
 		delete(Objects, ['dying sailor', CurrentRoom, 0], NewObjects), set_objects(NewObjects).
 
+/* Switch fuse box */
+
+switch(Object) :-
+	get_currentRoom(CurrentRoom),
+	get_objects(Objects),
+	\+ member([Object, CurrentRoom, _], Objects),
+	!,
+	write('There''s no '),
+	write(Object), write(' here.'), nl.
+
+switch(Object) :-
+	Object \== 'fuse box',
+	write('You cannot switch '),
+	write(Object), write('.'), nl.
+
+switch('fuse box') :- 
+	get_isPowerOn(IsPowerOn),
+	IsPowerOn = 0,
+	set_isPowerOn(1),
+	write('You turn on the power.'),
+	nl.
+
+switch('fuse box') :- 
+	get_isPowerOn(IsPowerOn),
+	IsPowerOn = 1,
+	set_isPowerOn(0),
+	write('You turn off the power.'),
+	nl.	
+		
 /* Save and Load */
-saveGame(FileName) :-
+save(FileName) :-
 	open(FileName, write, Stream),
 	gameState_save(Stream), close(Stream),
 	write('Game saved.'), nl, nl.

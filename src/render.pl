@@ -18,7 +18,7 @@ displayCurrentRoom(CurrentRoom) :- write('You are in the '), write(CurrentRoom),
 
 displayStoryRoom(_).
 
-displayInventory(Inventory) :- length(Inventory, X), X > 0, !, write('You are carrying:'), nl, displayList(Inventory), nl.
+displayInventory(Inventory) :- length(Inventory, X), X > 0, !, write('You are carrying:'), nl, displayList(Inventory).
 
 displayInventory([]) :- write('You are carrying nothing.'), nl, nl.
 
