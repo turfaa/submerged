@@ -51,7 +51,7 @@ Wardroom - Crew's quarters - Storage room
 
 ### Sonar room
 
-- Sonar display: shows distance to enemy ship (if enemy is too close, it will fire and kill the player, except if the player has activated the Excalibur ADS AI). Requires power to function.
+- Sonar display: shows distance to enemy ship (if enemy is too close, it will fire and kill the player, except if the player has activated the Excalibur Active Defense System). Requires power to function.
 - Airlock inner hatch: initially locked.
 - Headphones: -
 
@@ -59,7 +59,7 @@ Wardroom - Crew's quarters - Storage room
 
 - Airlock outer hatch: permanently jammed.
 
-### Crew quarters
+### Crew's quarters
 
 - Book: -
 - Canned food: -
@@ -76,13 +76,13 @@ Wardroom - Crew's quarters - Storage room
 ### Storage room
 
 - Diving equipment: required to survive flooding.
-- Oxygen canisters: replenish oxygen level (if oxygen level too low, the player will die).
+- Oxygen canister: replenish oxygen level (if oxygen level too low, the player will die).
 - Crowbar: used to break hole in the reactor.
 
 ### Control room
 
-- Ship control AI: NPC, lock/unlock all hatches (except jammed ones). Requires power to function. Also activate Excalibur ADS (defends the sub from enemy attack) if given correct activation code (found in document in Wardroom).
-- Map: story
+- Control AI: NPC, lock/unlock all hatches (except jammed ones). Requires power to function. Also activate Excalibur ADS (defends the sub from enemy attack) if given correct activation code (found in document in Wardroom).
+- Map: see map of sub.
 - Radio: NPC, reveals secondary objective. Requires power to function.
 - Periscope: -
 
