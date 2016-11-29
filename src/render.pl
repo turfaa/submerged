@@ -2,13 +2,13 @@ render_gameState :- !,
 	render_room, render_status.
 
 render_room :-
-	gameState(_, _, CurrentRoom, _, Objects, _),
+	gameState(_, _, CurrentRoom, _, Objects, _, _),
 	displayCurrentRoom(CurrentRoom),
 	displayStoryRoom(CurrentRoom),
 	displayObjects(Objects, CurrentRoom).
 	
 render_status :-
-	gameState(IsPowerOn, OxygenLevel, _, Inventory, _, ExplosiveTimer),
+	gameState(IsPowerOn, OxygenLevel, _, Inventory, _, ExplosiveTimer, _),
 	displayInventory(Inventory),
 	displayOxygenLevel(OxygenLevel),
 	displayIsPowerOn(IsPowerOn),
