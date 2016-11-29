@@ -1,8 +1,8 @@
 process('exit') :-
-	retract(gameState(_, _, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
 process('quit') :-
-	retract(gameState(_, _, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
 process('menu') :- menuLoop, !.
 
@@ -70,8 +70,7 @@ path('Control room', w, 'Sonar room') :- !.
 path('Control room', e, 'Engine room') :- !, write('Warning: The room in the east of this room is flooded.'), nl.
 
 path('Engine room', w, 'Control room') :- !.
-path('Engine room', e, 'Reactor') :- get_reactorLocked(IsLocked), IsLocked == 1, !, write('The room is locked.'), nl.
-path('Engine room', e, 'Reactor') :- !, set_flooded(1), nl.
+path('Engine room', e, 'Reactor') :- get_reactorLocked(IsLocked), IsLocked == 0, !, set_flooded(1), nl, flooding.
 
 path('Reactor', w, 'Engine room') :- !.
 path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole','Reactor', 1],Objects).
@@ -83,11 +82,11 @@ path_story('Sonar room', w) :- write('It seems like there''s a way, but there ar
 path_story('Sonar room', n) :- write('The hatch is locked.'), nl, nl.
 path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it.'), nl, nl.
 path_story('Reactor', n) :- write('There''s a hole, but it''s too small for you to pass through.'), nl, nl.
+path_story('Engine room', e) :- write('The room is locked.'), nl, nl.
 
 go(Direction) :- get_currentRoom(CurrentRoom),
-                CurrentRoom == NextRoom,
-                 path(CurrentRoom, Direction, NextRoom)
-                 .
+                 path(CurrentRoom, Direction, NextRoom),
+                 CurrentRoom == NextRoom, !.
 
 go(Direction) :- get_currentRoom(CurrentRoom),
                 path(CurrentRoom, Direction, NextRoom),
@@ -98,7 +97,7 @@ go(Direction) :- get_currentRoom(CurrentRoom),
 				NewExplosiveTimer is OldExplosiveTimer - 1,
 				max(-1, NewExplosiveTimer, ExplosiveTimer), set_explosiveTimer(ExplosiveTimer),
 				get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
-				render_gameState.
+				render_gameState, !.
 
 go(_) :- write('You can''t go that way.'), nl, nl.
 
@@ -256,7 +255,7 @@ suicide :-
 	write('You choose to be dead.'), nl,
 	write('We are dissapointed.'), nl, nl,
 	write('Game Over'), nl, nl,
-	retract(gameState(_, _, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
 
 /* Switch fuse box */
@@ -334,7 +333,7 @@ operate('control panel') :-
 	IsPowerOn = 1,
     get_airlockLocked(Airlock),
     get_reactorLocked(Reactor),
-    AirLock == 1,
+    Airlock == 1,
     Reactor == 1,
 	write('You unlock all hatches.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
@@ -346,7 +345,7 @@ operate('control panel') :-
 	IsPowerOn = 1,
     get_airlockLocked(Airlock),
     get_reactorLocked(Reactor),
-    AirLock == 0,
+    Airlock == 0,
     Reactor == 0,
 	write('You lock all hatches.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance),
@@ -358,6 +357,19 @@ operate(Object) :-
 	write('You cannot operate '),
 	write(Object), write('.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 1, set_distance(NewDistance).
+
+flooding :-
+    get_inventory(Inventory),
+    get_objects(Objects),
+    \+ member('diving equipment', Inventory),
+    \+ member(['diving equipment', _, _], Objects).
+
+flooding :-
+    write('Your submarine is flooded, and you can''t go out of it.'), nl,
+    write('Use your diving equipment next time. (If you reincarnated, of course)'), nl,
+    write('Game Over'), nl, nl,
+    retract(gameState(_, _, _, _, _, _, _, _, _, _)),
+    menuLoop, !.
 
 /* Save and Load */
 save(FileName) :-
@@ -378,7 +390,7 @@ gameOver :-
 	write('You ran out of oxygen.'), nl,
 	write('You are starting to lose your consciousness.'), nl, nl,
 	write('Game Over'), nl, nl,
-	retract(gameState(_, _, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
 
 gameOver :-
@@ -387,7 +399,7 @@ gameOver :-
 	write('The explosives exploded.'), nl,
 	write('You died.'), nl, nl,
 	write('Game Over'), nl, nl,
-	retract(gameState(_, _, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
 
 gameOver :-
@@ -396,7 +408,7 @@ gameOver :-
 	write('The enemy''s sub attacks this submarine.'), nl,
 	write('You died.'), nl, nl,
 	write('Game Over'), nl, nl,
-	retract(gameState(_, _, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
 
 
@@ -404,7 +416,7 @@ gameOver :-
 win :-
 	get_currentRoom(CurrentRoom),
 	CurrentRoom = 'Surface',
-	retract(gameState(_, _, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
 
 /* Fungsi pembantu */
