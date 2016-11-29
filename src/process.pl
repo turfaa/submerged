@@ -17,6 +17,7 @@ process(use(X)) :- use(X), !.
 process(take(Object)) :- take(Object), !.
 process(drop(Object)) :- drop(Object), !.
 process(move(Object)) :- move(Object), !.
+process(suicide) :- suicide, !.
 
 process(switch(Object)) :- switch(Object), !.
 process(operate(Object)) :- operate(Object), !.
@@ -208,7 +209,7 @@ talk(Object) :-
 /* Ketika hidup sudah mulai keras, saatnya untuk putus asa dan mengakhiri semua ini */
 
 suicide :-
-	get_inventory(Inventory), member('knive', Inventory),
+	get_inventory(Inventory), member('knife', Inventory),
 	!,
 	write('You are about to suicide, do you really wanna do that?'), nl,
 	write('NB : It''s hurt so much and against god rules'), nl,
@@ -218,7 +219,7 @@ suicide :-
 	write('You choose to be dead.'), nl,
 	write('We are dissapointed.'), nl, nl,
 	write('Game Over'), nl, nl,
-	retract(gameState(_, _, _, _, _, _)),
+	retract(gameState(_, _, _, _, _, _, _)),
 	menuLoop, !.
 
 /* Switch fuse box */
