@@ -30,13 +30,13 @@ get_currentRoom(Value) :- gameState(_, _, Value, _, _, _).
 get_inventory(Value) :- gameState(_, _, _, Value, _, _).
 get_objects(Value) :- gameState(_, _, _, _, Value, _).
 get_explosiveTimer(Value) :- gameState(_, _, _, _, _, Value).
-	
-gameState_load(Stream) :- 
+
+gameState_load(Stream) :-
 	read(Stream, GameState),
 	asserta(GameState).
-	
-gameState_save(Stream) :- 
-	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer), 
+
+gameState_save(Stream) :-
+	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer),
 	write_term(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer), [quoted(true)]), write(Stream, .).
 
 /* Initial game state */
@@ -58,6 +58,7 @@ init_gameState :-
 		['canned food', 'Crew''s quarters', 0],
 		['bucket', 'Crew''s quarters', 0],
 		['knife', 'Crew''s quarters', 0],
+		['dying sailor','Crew''s quarters',0],
 
 		['intelligence documents', 'Wardroom', 0],
 		['ship''s log', 'Wardroom', 0],

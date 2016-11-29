@@ -140,8 +140,25 @@ talk(radio) :-
 		get_currentRoom(CurrentRoom),
 		get_isPowerOn(Power),
 		get_objects(Objects), member(['radio', CurrentRoom, 1], Objects),
+		\+ member(['dying sailor',_,_], Objects),
 		!,
+		write('You enter the radio''s password'), nl,
 		write('Your secondary objective is destroy this submarine'), nl.
+
+talk(radio) :-
+		get_currentRoom(CurrentRoom),
+		get_isPowerOn(Power),
+		get_objects(Objects), member(['radio', CurrentRoom, 1], Objects),
+		!,
+		write('You found a radio, but it''s password protected'), nl.
+
+talk('dying sailor') :-
+		get_currentRoom(CurrentRoom),
+		get_objects(Objects), member(['dying sailor', CurrentRoom, 0], Objects),
+		!,
+		write('Please do something for me, hear the radio. This is the password'), nl,
+		write('The sailor died'), nl,
+		delete(Objects, ['dying sailor', CurrentRoom, 0], NewObjects), set_objects(NewObjects).
 
 /* Save and Load */
 saveGame(FileName) :-
