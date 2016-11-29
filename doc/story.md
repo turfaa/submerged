@@ -64,7 +64,7 @@ Wardroom - Crew's quarters - Storage room
 - Book: -
 - Canned food: -
 - Bucket: -
-- Knife: -
+- Knife: Dapat digunakan untuk bunuh diri ketika pemain sudah putus asa dengan kerasnya hidup ini
 - Dying sailor: ngasih password untuk dengerin radio
 
 ### Wardroom

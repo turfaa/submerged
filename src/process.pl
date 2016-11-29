@@ -52,15 +52,12 @@ path('Engine room', w, 'Control room') :- !.
 path('Engine room', e, 'Reactor') :- !.
 
 path('Reactor', w, 'Engine room') :- !.
-path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole','Reactor', 1],Objects).
+path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole',CurrentRoom, 1],Objects).
 
 path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
 
 path_story('Weapons room', e) :- write('It seems like there''s a way, but there are barrels covering it.'), nl, nl.
-path_story('Sonar room', w) :- write('It seems like there''s a way, but there are barrels covering it.'), nl, nl.
-path_story('Engine room', e) :- write('The hatch is too small.'), nl, nl.
 path_story('Sonar room', n) :- write('The door is locked.'), nl, nl.
-path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it.'), nl, nl.
 path_story('Reactor', n) :- write('There''s a hole, but it''s too small for you to pass through.'), nl, nl.
 
 go(Direction) :- get_currentRoom(CurrentRoom),
