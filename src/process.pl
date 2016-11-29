@@ -26,6 +26,7 @@ process(check) :- check, !.
 
 process(switch(Object)) :- switch(Object), !.
 process(operate(Object)) :- operate(Object), !.
+process(activate(Object)) :- activate(Object), !.
 
 process(save(FileName)) :- save(FileName), !.
 
@@ -351,11 +352,23 @@ activate('Ship control AI') :-
 	get_objects(Objects),
 	member(['Ship control AI',CurrentRoom,1], Objects),
 	member(['ai_defense_activated','untouched',0], Objects),
+	write('You''re about to activate defense system.'), nl,
+	write('The defense system is password protected.'), nl,
+	write('Please enter the password: '),
+	read(user_input, Input), Input = '293441',
 	!,
 	write('AI Defense System Activated'), nl,
 	write('Now you don''t need to worry about enemies'), nl,
 	delete(Objects, ['ai_defense_activated','untouched',0], NewObjects),
 	set_objects(NewObjects).
+
+activate('Ship control AI') :-
+	get_currentRoom(CurrentRoom),
+	get_objects(Objects),
+	member(['Ship control AI',CurrentRoom,1], Objects),
+	member(['ai_defense_activated','untouched',0], Objects),
+	!,
+	write('Wrong password!'), nl.
 
 /* Ketika hidup sudah mulai keras, saatnya untuk putus asa dan mengakhiri semua ini */
 suicide :-

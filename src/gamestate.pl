@@ -62,7 +62,7 @@ gameState_save(Stream) :-
 /* Initial game state */
 
 init_gameState :-
-	asserta(gameState(0, 10, 'Weapons room', [], [
+	asserta(gameState(0, 20, 'Weapons room', [], [
 
 		['barrels', 'Weapons room', 1],
 		['explosives', 'Weapons room', 0],
