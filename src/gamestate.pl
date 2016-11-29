@@ -93,6 +93,7 @@ init_gameState :-
 		['map', 'Control room', 0],
 		['radio', 'Control room', 1],
 		['periscope', 'Control room', 1],
+		['Ship control AI', 'Control room',1],
 
 		['fuse box', 'Engine room', 1],
 		['reactor status display', 'Engine room', 1],
@@ -102,9 +103,11 @@ init_gameState :-
 
 		['hole', 'Reactor', 1],
 		['engine', 'Reactor', 1],
-		['dead engineer', 'Reactor', 1]
+		['dead engineer', 'Reactor', 1],
 
-	], -1, 30, 1, 1, 0)).
+		['ai_defense_activated','untouched',0]
+
+	], -1, 1000, 1, 1, 0)).
 
 /* Constants */
 
