@@ -54,7 +54,7 @@ instructions :-
 
 path('Weapons room', e, 'Sonar room') :- get_objects(Objects), \+ member(['barrels', 'Weapons room', 1],Objects), !.
 path('Sonar room', w, 'Weapons room') :- !.
-path('Sonar room', n, 'Airlock') :- get_objects(Objects), \+ member(['airlock inner hatch', 'Sonar room', 1],Objects), !.
+path('Sonar room', n, 'Airlock') :- get_airlockLocked(IsLocked), IsLocked == 0, !.
 path('Sonar room', s, 'Crew\'s quarters') :- !.
 path('Sonar room', e, 'Control room') :- !.
 
@@ -273,9 +273,16 @@ suicide :-
 check :-
 	get_currentRoom(CurrentRoom),
 	CurrentRoom == 'Engine room',
-	write('The reactor room is flooded. You could die if you open the door.'), nl,
+	write('The reactor room is flooded. You could die if you open the door.'), nl, nl,
 	!.
 
+/* Airlock outer hatch */
+check :-	
+	get_currentRoom(CurrentRoom),
+	CurrentRoom == 'Airlock',
+	write('The hatch is jammed.'), nl, nl,
+	!.
+	
 /* Switch fuse box */
 
 switch(Object) :-
@@ -399,7 +406,7 @@ loadGame(FileName) :-
 	open(FileName, read, Stream),
 	gameState_load(Stream),
 	close(Stream),
-	write('Game loaded'), nl, nl.
+	write('Game loaded.'), nl, nl.
 
 /* Game Over */
 gameOver :-
