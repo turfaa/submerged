@@ -22,6 +22,7 @@ process(take(Object)) :- take(Object), !.
 process(drop(Object)) :- drop(Object), !.
 process(move(Object)) :- move(Object), !.
 process(suicide) :- suicide, !.
+process(check) :- check, !.
 
 process(switch(Object)) :- switch(Object), !.
 process(operate(Object)) :- operate(Object), !.
@@ -40,6 +41,7 @@ instructions :-
 	write('move(Object).       -- to move an object.'), nl,
 	write('switch(Object).     -- to switch on/off switch.'), nl,
 	write('operate(Object).    -- to operate an object.'), nl,
+	write('check.			   -- to check some status display'),nl,
 	write('suicide.            -- to commit suicide.'), nl,
 	write('talk(Object/NPC).   -- to talk to an npc.'), nl,
 	write('stat.               -- to see current status and inventory.'), nl,
@@ -255,6 +257,13 @@ suicide :-
 	write('Game Over'), nl, nl,
 	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
+
+/* Reactor status display */
+check :-
+	get_currentRoom(CurrentRoom),
+	CurrentRoom == 'Engine room',
+	write('The reactor room is flooded. You could die if you open the door.'), nl,
+	!.
 
 /* Switch fuse box */
 
