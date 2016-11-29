@@ -28,28 +28,28 @@ process(_) :- write('Invalid command.'), nl, !.
 /* Koneksi antar ruangan */
 
 path('Weapons room', e, 'Sonar room') :- get_objects(Objects), \+ member(['barrels', 'Weapons room', 1],Objects), !.
-path('Sonar room', w, 'Weapons room').
-path('Sonar room', n, 'Airlock') :- get_isPowerOn(Power), Power = 1.
-path('Sonar room', s, 'Crew\'s quarters').
-path('Sonar room', e, 'Control room').
+path('Sonar room', w, 'Weapons room') :- !.
+path('Sonar room', n, 'Airlock') :- get_isPowerOn(Power), Power = 1, !.
+path('Sonar room', s, 'Crew\'s quarters') :- !.
+path('Sonar room', e, 'Control room') :- !.
 
-path('Airlock', s, 'Sonar room') :- get_isPowerOn(Power), Power = 1.
+path('Airlock', s, 'Sonar room') :- get_isPowerOn(Power), Power = 1, !.
 
-path('Crew\'s quarters', n, 'Sonar room').
-path('Crew\'s quarters', w, 'Wardroom').
-path('Crew\'s quarters', e, 'Storage room').
+path('Crew\'s quarters', n, 'Sonar room') :- !.
+path('Crew\'s quarters', w, 'Wardroom') :- !.
+path('Crew\'s quarters', e, 'Storage room') :- !.
 
-path('Wardroom', e, 'Crew\'s quarters').
+path('Wardroom', e, 'Crew\'s quarters') :- !.
 
-path('Storage room', w, 'Crew\'s quarters').
+path('Storage room', w, 'Crew\'s quarters') :- !.
 
-path('Control room', w, 'Sonar room').
-path('Control room', e, 'Engine room').
+path('Control room', w, 'Sonar room') :- !.
+path('Control room', e, 'Engine room') :- !.
 
-path('Engine room', w, 'Control room').
-path('Engine room', e, 'Reactor').
+path('Engine room', w, 'Control room') :- !.
+path('Engine room', e, 'Reactor') :- !.
 
-path('Reactor', w, 'Engine room').
+path('Reactor', w, 'Engine room') :- 1.
 path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole','Reactor', 1],Objects).
 
 path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
