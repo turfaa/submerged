@@ -49,7 +49,7 @@ path('Control room', e, 'Engine room') :- !.
 path('Engine room', w, 'Control room') :- !.
 path('Engine room', e, 'Reactor') :- !.
 
-path('Reactor', w, 'Engine room') :- 1.
+path('Reactor', w, 'Engine room') :- !.
 path('Reactor', n, 'Surface'):- get_objects(Objects), \+ member(['hole','Reactor', 1],Objects).
 
 path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
