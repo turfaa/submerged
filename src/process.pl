@@ -250,7 +250,6 @@ use(map) :-
 	write('                    |                                           '), nl,
 	write('                    |                                           '), nl,
 	write('Weapons room - Sonar room - Control room - Engine room - Reactor'), nl,
-<<<<<<< HEAD
 	write('                    |                                           '), nl,
 	write('                    |                                           '), nl,
 	write('Wardroom - Crew''s quarters - Storage room                      '), nl, nl,
