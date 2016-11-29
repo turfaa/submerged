@@ -9,7 +9,7 @@ take(Object) :-
 	get_inventory(Inventory),
 	length(Inventory, Size),
 	Size == 3,
-	write('You''re inventory is full'), nl.
+	write('Your inventory is full'), nl.
 
 take(Object) :-
 	get_currentRoom(CurrentRoom),
@@ -27,15 +27,15 @@ take(Object) :-
 	get_objects(Objects),
 	member([Object, CurrentRoom, 1], Objects),
 	write('You cannot take '), write(Object), write('.'), nl.
-	
+
 take(Object) :-
-	get_inventory(Inventory), 
+	get_inventory(Inventory),
 	member(Object, Inventory),
-	write('It''s already in you''re inventory.'), nl.
-	
+	write('It''s already in your inventory.'), nl.
+
 take(_) :-
 	write('It''s not here'), nl.
-	
+
 drop(Object) :-
 	get_inventory(Inventory),
 	member(Object, Inventory),
@@ -46,6 +46,6 @@ drop(Object) :-
 	append(Objects, [[Object,CurrentRoom,0]], NewObjects),
 	set_objects(NewObjects),
 	write('You drop '), write(Object), write('.'), nl.
-	
+
 drop(_) :-
 	write('It''s not in your inventory.'), nl.

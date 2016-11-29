@@ -4,15 +4,15 @@ set_isPowerOn(Value) :-
 	retract(gameState(_, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer)),
 	asserta(gameState(Value, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer)).
 
-set_oxygenLevel(Value) :- 
+set_oxygenLevel(Value) :-
 	retract(gameState(IsPowerOn, _, CurrentRoom, Inventory, Objects, ExplosiveTimer)),
 	asserta(gameState(IsPowerOn, Value, CurrentRoom, Inventory, Objects, ExplosiveTimer)).
 
-set_currentRoom(Value) :- 
+set_currentRoom(Value) :-
 	retract(gameState(IsPowerOn, OxygenLevel, _, Inventory, Objects, ExplosiveTimer)),
 	asserta(gameState(IsPowerOn, OxygenLevel, Value, Inventory, Objects, ExplosiveTimer)).
 
-set_inventory(Value) :- 
+set_inventory(Value) :-
 	retract(gameState(IsPowerOn, OxygenLevel, CurrentRoom, _, Objects, ExplosiveTimer)),
 	asserta(gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer)).
 
@@ -30,37 +30,21 @@ get_currentRoom(Value) :- gameState(_, _, Value, _, _, _).
 get_inventory(Value) :- gameState(_, _, _, Value, _, _).
 get_objects(Value) :- gameState(_, _, _, _, Value, _).
 get_explosiveTimer(Value) :- gameState(_, _, _, _, _, Value).
-	
-/*	
-gameState_load(Stream) :- 
-	readWord(Stream, GameState),
-	write(GameState),
+
+gameState_load(Stream) :-
+	read(Stream, GameState),
 	asserta(GameState).
 
-readWord(InStream,Chars):- 
-	get_code(InStream,Char),
-	checkCharAndReadRest(Char,Chars,InStream),
-	atom_codes(W,Chars).
-
-checkCharAndReadRest(10,[],_):- !. 
-checkCharAndReadRest(-1,[],_):- !. 
-checkCharAndReadRest(end_of_file,[],_):- !.
-checkCharAndReadRest(Char,[Char|Chars],InStream):-
-	get_code(InStream,NextChar),
-	checkCharAndReadRest(NextChar,Chars,InStream).
-	
-*/
-
-gameState_save(Stream) :- 
-	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer), 
-	write(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Value, Objects, ExplosiveTimer)), write(Stream, .).
+gameState_save(Stream) :-
+	gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer),
+	write_term(Stream, gameState(IsPowerOn, OxygenLevel, CurrentRoom, Inventory, Objects, ExplosiveTimer), [quoted(true)]), write(Stream, .).
 
 /* Initial game state */
 
 init_gameState :-
 	asserta(gameState(0, 10, 'Weapons room', [], [
 
-		['barrels', 'Weapons room', 0],
+		['barrels', 'Weapons room', 1],
 		['explosives', 'Weapons room', 0],
 		['weapons', 'Weapons room', 1],
 
@@ -74,6 +58,7 @@ init_gameState :-
 		['canned food', 'Crew''s quarters', 0],
 		['bucket', 'Crew''s quarters', 0],
 		['knife', 'Crew''s quarters', 0],
+		['dying sailor','Crew''s quarters',0],
 
 		['intelligence documents', 'Wardroom', 0],
 		['ship''s log', 'Wardroom', 0],

@@ -65,6 +65,7 @@ Wardroom - Crew's quarters - Storage room
 - Canned food: -
 - Bucket: -
 - Knife: -
+- Dying sailor: ngasih password untuk dengerin radio
 
 ### Wardroom
 
