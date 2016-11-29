@@ -4,25 +4,22 @@ process('exit') :-
 process('quit') :- menuLoop, !.
 process('menu') :- menuLoop, !.
 
-process('n') :- go(n), !, fail.
-process('e') :- go(e), !, fail.
-process('s') :- go(s), !, fail.
-process('w') :- go(w), !, fail.
+process('n') :- go(n), !.
+process('e') :- go(e), !.
+process('s') :- go(s), !.
+process('w') :- go(w), !.
 
-process('look') :- !, fail.
+process('look') :- !.
 
-process(use(X)) :- use(X), !, fail.
-process(take(Object)) :- take(Object), !, fail.
-process(drop(Object)) :- drop(Object), !, fail.
-process(interact(Object)) :- interact(Object), !, fail.
-process(move) :- move, !, fail.
+process(use(X)) :- use(X), !.
+process(take(Object)) :- take(Object), !.
+process(drop(Object)) :- drop(Object), !.
+process(interact(Object)) :- interact(Object), !.
+process(move) :- move, !.
 
-process('save') :- 
-	open('gamestate.txt', write, Stream), 
-	gameState_save(Stream), close(Stream),
-	write('Game saved.'), nl, !, fail.
+process(saveGame(FileName)) :- saveGame(FileName), !.
 
-process(_) :- write('Invalid command.'), nl, !, fail.
+process(_) :- write('Invalid command.'), nl, !.
 
 
 /* Koneksi antar ruangan */
@@ -123,6 +120,26 @@ move :- get_currentRoom(CurrentRoom),
         set_objects(NewObjects),
         write('Successfully moved the barrels.'), nl.
 
+/* Save and Load */
+saveGame(FileName) :-
+	open(FileName, write, Stream), 
+	gameState_save(Stream), close(Stream),
+	write('Game saved.'), nl, nl.
+
+loadGame(FileName) :-
+	open(FileName, read, Stream),
+	gameState_load(Stream),
+	close(Stream),
+	write('Game loaded'), nl, nl.
+	
+/* Game Over */
+gameOver :-
+	get_oxygenLevel(Oxygen), 
+	Oxygen = 0, 
+	write('You ran out of oxygen.'), nl,
+	write('You are starting to lose your consciousness.'), nl, nl,
+	write('Game Over'), nl, nl, menuLoop, !.
+		
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.
 max(_, Y, Y).

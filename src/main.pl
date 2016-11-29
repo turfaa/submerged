@@ -22,10 +22,8 @@ menuAction('start') :-
 	init_gameState, /* set initial game state */
 	gameLoop.
 
-menuAction('load') :-
-	open('gamestate.txt', read, Stream), 
-	gameState_load(Stream), 
-	close(Stream),
+menuAction(loadGame(FileName)) :-
+	loadGame(FileName),
 	gameLoop.
 	
 menuAction('exit') :- abort.
@@ -46,7 +44,11 @@ gameLoop :-
 		read(user_input, Input),
 
 		/* Process input */
-		process(Input)
+		process(Input),
+		
+		\+ gameOver,
+		
+		fail
 
 	), error(syntax_error(_), _), (
 		write('Invalid input.'), nl, fail, !
