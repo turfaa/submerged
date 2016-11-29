@@ -111,4 +111,4 @@ init_gameState :-
 
 /* Constants */
 
-maxOxygenLevel(10).
+maxOxygenLevel(20).

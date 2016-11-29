@@ -1,0 +1,327 @@
+= SUBMERGED =
+=============
+
+Enter [start.] to begin, [load(Filename).] to load game, [exit.] to quit:
+> start.
+Available commands are:
+n, s, e, w.         -- to go in that direction.
+take(Object).       -- to pick up an object
+drop(Object).       -- to put down an object
+use(Object).        -- to use an object
+move(Object).       -- to move an object.
+switch(Object).     -- to switch on/off switch.
+operate(Object).    -- to operate an object.
+check,              -- to check some status display.
+suicide.            -- to commit suicide.
+talk(Object/NPC).   -- to talk to an npc.
+stat.               -- to see current status and inventory.
+look.               -- to look around in your current room.
+instructions.       -- to see this message again.
+save(Filename).     -- to save current game.
+quit.               -- to end the game and go back to main menu.
+
+You wake up alone on the cold, hard metal floor of your sub's weapons room.
+Your head still hurts from the impact of the explosion before.
+You tried to slowly stand up, grabbing the pipes on the sides of the room.
+Seawater is trickling down from leaks at the wall and pooling to the front.
+Only then you realized that the sub is pointing at at angle downwards, and is probably still sinking deeper and deeper.
+You know that you don't have much time to escape to the surface.
+
+You are in the Weapons room.
+
+You are in the weapons room, at the bow of the sub.
+Only the faint red glow of the emergency fluorescent lighting remains.
+The impact of the explosion has dislodged the stored weapons, which are now scattered on the floor. (Barrels blocked the exit hatch.)
+
+This room contains:
+barrels
+explosives
+weapons
+
+You are carrying nothing.
+
+Oxygen level 20/10 ####################
+
+Ship's power is off.
+
+> move(barrels).
+You successfully moved the barrels.
+
+> e.
+You are in the Sonar room.
+
+You entered the sonar room. (The sonar display is powered off./The sonar display emits a faint blue glow.)
+There's a ladder that leads to the airlock upwards, through a closed hatch.
+Another closed hatch leads to the crew's quarters below.
+A passage opens to the control room in the back.
+
+This room contains:
+sonar display
+airlock inner hatch
+headphones
+
+You are carrying nothing.
+
+Oxygen level 19/10 ###################
+
+Ship's power is off.
+
+> s.
+You are in the Crew's quarters.
+
+The crew's quarters is where the crew rests when not on duty.
+A hatch to the back connects it with the storage room; a door to the front connects it to the wardroom.
+There's a ladder to the sonar room above.
+
+This room contains:
+book
+canned food
+bucket
+knife
+dying sailor
+
+You are carrying nothing.
+
+Oxygen level 18/10 ##################
+
+Ship's power is off.
+
+> e.
+You are in the Storage room.
+
+Food, equipment and supplies are kept in the storage room.
+A hatch connects it with the crew's quarters in front.
+
+This room contains:
+diving equipment
+oxygen canister
+crowbar
+
+You are carrying nothing.
+
+Oxygen level 17/10 #################
+
+Ship's power is off.
+
+> take('diving equipment').
+You take diving equipment.
+
+> take('crowbar').
+You take crowbar.
+
+> w.
+You are in the Crew's quarters.
+
+The crew's quarters is where the crew rests when not on duty.
+A hatch to the back connects it with the storage room; a door to the front connects it to the wardroom.
+There's a ladder to the sonar room above.
+
+This room contains:
+book
+canned food
+bucket
+knife
+dying sailor
+
+You are carrying:
+diving equipment
+crowbar
+
+Oxygen level 16/10 ################
+
+Ship's power is off.
+
+> n.
+You are in the Sonar room.
+
+You entered the sonar room. (The sonar display is powered off./The sonar display emits a faint blue glow.)
+There's a ladder that leads to the airlock upwards, through a closed hatch.
+Another closed hatch leads to the crew's quarters below.
+A passage opens to the control room in the back.
+
+This room contains:
+sonar display
+airlock inner hatch
+headphones
+
+You are carrying:
+diving equipment
+crowbar
+
+Oxygen level 15/10 ###############
+
+Ship's power is off.
+
+> e.
+You are in the Control room.
+
+You entered the control room.
+The sub's computerized control and communication systems are mostly located here.
+Various displays and gauges can be seen on the wall.
+A console can be used to interact with the sub's control AI.
+A periscope mast is located near the center of the room.
+A hatch opens to the back, to the engine room.
+A passage leads forward to the sonar room.
+
+This room contains:
+control panel
+map
+radio
+periscope
+Ship control AI
+
+You are carrying:
+diving equipment
+crowbar
+
+Oxygen level 14/10 ##############
+
+Ship's power is off.
+
+> e.
+You are in the Engine room.
+
+The engine room houses the forward part of the sub's reactor and engines.
+This room is where engineers control the sub's power-generating reactors.
+A hatch leads to the control room in front.
+Another hatch leads backwards, to the rear part of the reactor at the stern of the sub.
+
+This room contains:
+fuse box
+reactor status display
+engine spare parts
+fire extinguisher
+oxygen canister
+
+You are carrying:
+diving equipment
+crowbar
+
+Oxygen level 13/10 #############
+
+Ship's power is off.
+
+> switch('fuse box').
+You turn on the power.
+
+> w.
+You are in the Control room.
+
+You entered the control room.
+The sub's computerized control and communication systems are mostly located here.
+Various displays and gauges can be seen on the wall.
+A console can be used to interact with the sub's control AI.
+A periscope mast is located near the center of the room.
+A hatch opens to the back, to the engine room.
+A passage leads forward to the sonar room.
+
+This room contains:
+control panel
+map
+radio
+periscope
+Ship control AI
+
+You are carrying:
+diving equipment
+crowbar
+
+Oxygen level 12/10 ############
+
+Ship's power is on.
+
+> operate('control panel').
+You unlock all hatches.
+
+> e.
+You are in the Engine room.
+
+The engine room houses the forward part of the sub's reactor and engines.
+This room is where engineers control the sub's power-generating reactors.
+A hatch leads to the control room in front.
+Another hatch leads backwards, to the rear part of the reactor at the stern of the sub.
+
+This room contains:
+fuse box
+reactor status display
+engine spare parts
+fire extinguisher
+oxygen canister
+
+You are carrying:
+diving equipment
+crowbar
+
+Oxygen level 11/10 ###########
+
+Ship's power is on.
+
+> use ('diving equipment').
+Invalid input.
+> use('diving equipment').
+You wear the diving equipment.
+
+> e.
+
+
+You are in the Reactor.
+
+The reactor is flooded and heavily damaged.
+It's metal parts were torn apart.
+The hull has been sliced through; a gaping hole opens to the outside. (However, bent frames and metal pipes are blocking your way. You need to somehow clear the way by force to pass through and go outside.)
+
+This room contains:
+hole
+engine
+dead engineer
+
+You are carrying:
+crowbar
+
+Oxygen level 10/10 ##########
+
+Ship's power is on.
+
+> e.
+You can't go that way.
+
+> n.
+There's a hole, but it's too small for you to pass through.
+
+> use(crowbar).
+You use the crowbar to widen the hole.
+
+> n.
+You finally escaped from the doomed sub, and ascend slowly to the surface in your emergency diving equipment.
+You reach the surface.
+The sky is clear, and moonlight reflected off the somewhat calm sea, dotted with specks of oil and floating debris from the destroyed vessels.
+In the distance, you see enemy ships sailing past the border.
+The war has just started.
+
+You are carrying:
+crowbar
+
+Oxygen level 10/10 ##########
+
+Ship's power is on.
+
+You finally escaped from the doomed sub, and ascend slowly to the surface in your emergency diving equipment.
+You reach the surface.
+The sky is clear, and moonlight reflected off the somewhat calm sea, dotted with specks of oil and floating debris from the destroyed vessels.
+In the distance, you see enemy ships sailing past the border.
+The war has just started.
+
+You are carrying:
+crowbar
+
+Oxygen level 10/10 ##########
+
+Ship's power is on.
+
+You didn't do the secondary objective
+
+This game was created by:
+> Jonathan Christopher / 13515001
+> Jordhy Fernando / 13515004
+> Jauhar Arifin / 13515049
+> Turfa Auliarachman / 13515133
