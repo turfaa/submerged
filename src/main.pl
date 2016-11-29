@@ -1,8 +1,3 @@
-:- include('gamestate.pl').
-:- include('render.pl').
-:- include('process.pl').
-:- include('objects.pl').
-
 /* Main menu loop */
 
 :- initialization(submerged).
@@ -30,7 +25,7 @@ menuAction('start') :-
 menuAction(loadGame(FileName)) :-
 	loadGame(FileName),
 	gameLoop.
-	
+
 menuAction('exit') :- abort.
 menuAction('quit') :- abort.
 menuAction(_) :- write('Invalid action.'), nl, !, fail.
@@ -42,7 +37,7 @@ gameLoop :-
 	catch((
 
 		/* Render game state */
-		render_gameState, 
+		render_gameState,
 
 		/* Input */
 		write('> '),
@@ -50,10 +45,10 @@ gameLoop :-
 
 		/* Process input */
 		process(Input),
-		
+
 		\+ gameOver,
 		\+ win,
-		
+
 		fail
 
 	), error(syntax_error(_), _), (

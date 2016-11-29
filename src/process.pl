@@ -1,4 +1,4 @@
-process('exit') :- 
+process('exit') :-
 	retract(gameState(_, _, _, _, _, _)),
 	menuLoop, !.
 process('quit') :- menuLoop, !.
@@ -12,10 +12,10 @@ process('w') :- go(w), !.
 process('look') :- render_room, !.
 process('stat') :- render_status, !.
 
+process(talk(X)) :- talk(X), !.
 process(use(X)) :- use(X), !.
 process(take(Object)) :- take(Object), !.
 process(drop(Object)) :- drop(Object), !.
-process(interact(Object)) :- interact(Object), !.
 process(move) :- move, !.
 
 process(saveGame(FileName)) :- saveGame(FileName), !.
@@ -107,21 +107,21 @@ use('explosives')		:- !, write('Wrong arming code.').
 
 use('intelligence documents')   :- !, write('The arming code is : ''PANDORA BOX'' (with quotes)'), nl,
                                       use('Use it wisely.'), nl.
-									  
-use('crowbar') :- 
+
+use('crowbar') :-
 	get_currentRoom(CurrentRoom),
 	get_objects(Objects),
 	\+ member(['hole', CurrentRoom, 1], Objects),
 	write('There''s no hole here.'), nl.
-	
-use('crowbar') :- 
+
+use('crowbar') :-
 	get_currentRoom(CurrentRoom),
 	get_objects(Objects),
 	delete(Objects, ['hole', CurrentRoom, 1], NewObjects),
 	set_objects(NewObjects),
 	write('You use the crowbar to widen the hole.'), nl.
-	
-									  
+
+
 /* Memindahkan Barrel*/
 move :- get_currentRoom(CurrentRoom),
         get_objects(Objects),
@@ -135,9 +135,17 @@ move :- get_currentRoom(CurrentRoom),
         set_objects(NewObjects),
         write('Successfully moved the barrels.'), nl.
 
+/* Radio : Mendapatkan informasi tentang secondary objective */
+talk(radio) :-
+		get_currentRoom(CurrentRoom),
+		get_isPowerOn(Power),
+		get_objects(Objects), member(['radio', CurrentRoom, 1], Objects),
+		!,
+		write('Your secondary objective is destroy this submarine'), nl.
+
 /* Save and Load */
 saveGame(FileName) :-
-	open(FileName, write, Stream), 
+	open(FileName, write, Stream),
 	gameState_save(Stream), close(Stream),
 	write('Game saved.'), nl, nl.
 
@@ -146,14 +154,14 @@ loadGame(FileName) :-
 	gameState_load(Stream),
 	close(Stream),
 	write('Game loaded'), nl, nl.
-	
+
 /* Game Over */
 gameOver :-
-	get_oxygenLevel(Oxygen), 
-	Oxygen = 0, 
+	get_oxygenLevel(Oxygen),
+	Oxygen = 0,
 	write('You ran out of oxygen.'), nl,
 	write('You are starting to lose your consciousness.'), nl, nl,
-	write('Game Over'), nl, nl, 
+	write('Game Over'), nl, nl,
 	retract(gameState(_, _, _, _, _, _)),
 	menuLoop, !.
 
@@ -163,7 +171,7 @@ win :-
 	CurrentRoom = 'Surface',
 	retract(gameState(_, _, _, _, _, _)),
 	menuLoop, !.
-	
+
 /* Fungsi pembantu */
 max(X, Y, X) :- X > Y, !.
 max(_, Y, Y).
