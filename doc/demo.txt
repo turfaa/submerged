@@ -40,7 +40,7 @@ weapons
 
 You are carrying nothing.
 
-Oxygen level 20/10 ####################
+Oxygen level 20/20 ####################
 
 Ship's power is off.
 
@@ -62,7 +62,7 @@ headphones
 
 You are carrying nothing.
 
-Oxygen level 19/10 ###################
+Oxygen level 19/20 ###################.
 
 Ship's power is off.
 
@@ -82,7 +82,7 @@ dying sailor
 
 You are carrying nothing.
 
-Oxygen level 18/10 ##################
+Oxygen level 18/20 ##################..
 
 Ship's power is off.
 
@@ -99,14 +99,14 @@ crowbar
 
 You are carrying nothing.
 
-Oxygen level 17/10 #################
+Oxygen level 17/20 #################...
 
 Ship's power is off.
 
 > take('diving equipment').
 You take diving equipment.
 
-> take('crowbar').
+> take(crowbar).
 You take crowbar.
 
 > w.
@@ -127,7 +127,7 @@ You are carrying:
 diving equipment
 crowbar
 
-Oxygen level 16/10 ################
+Oxygen level 16/20 ################....
 
 Ship's power is off.
 
@@ -148,7 +148,7 @@ You are carrying:
 diving equipment
 crowbar
 
-Oxygen level 15/10 ###############
+Oxygen level 15/20 ###############.....
 
 Ship's power is off.
 
@@ -174,7 +174,7 @@ You are carrying:
 diving equipment
 crowbar
 
-Oxygen level 14/10 ##############
+Oxygen level 14/20 ##############......
 
 Ship's power is off.
 
@@ -197,7 +197,7 @@ You are carrying:
 diving equipment
 crowbar
 
-Oxygen level 13/10 #############
+Oxygen level 13/20 #############.......
 
 Ship's power is off.
 
@@ -226,12 +226,15 @@ You are carrying:
 diving equipment
 crowbar
 
-Oxygen level 12/10 ############
+Oxygen level 12/20 ############........
 
 Ship's power is on.
 
 > operate('control panel').
 You unlock all hatches.
+
+> use('diving equipment').
+You wear the diving equipment.
 
 > e.
 You are in the Engine room.
@@ -249,17 +252,11 @@ fire extinguisher
 oxygen canister
 
 You are carrying:
-diving equipment
 crowbar
 
-Oxygen level 11/10 ###########
+Oxygen level 11/20 ###########.........
 
 Ship's power is on.
-
-> use ('diving equipment').
-Invalid input.
-> use('diving equipment').
-You wear the diving equipment.
 
 > e.
 
@@ -278,12 +275,9 @@ dead engineer
 You are carrying:
 crowbar
 
-Oxygen level 10/10 ##########
+Oxygen level 10/20 ##########..........
 
 Ship's power is on.
-
-> e.
-You can't go that way.
 
 > n.
 There's a hole, but it's too small for you to pass through.
@@ -301,7 +295,7 @@ The war has just started.
 You are carrying:
 crowbar
 
-Oxygen level 10/10 ##########
+Oxygen level 10/20 ##########..........
 
 Ship's power is on.
 
@@ -314,7 +308,7 @@ The war has just started.
 You are carrying:
 crowbar
 
-Oxygen level 10/10 ##########
+Oxygen level 10/20 ##########..........
 
 Ship's power is on.
 
