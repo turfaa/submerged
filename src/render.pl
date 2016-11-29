@@ -29,14 +29,14 @@ displayOxygenLevel(OxygenLevel) :-
 	nl, nl.
 
 displayIsPowerOn(IsPowerOn) :- IsPowerOn = 0, !, write('Ship''s power is off.'), nl, nl.
-displayIsPowerOn(IsPowerOn) :- write('Ship''s power is on.'), nl, nl.
+displayIsPowerOn(_) :- write('Ship''s power is on.'), nl, nl.
 
 displayObjects(Objects, CurrentRoom) :- write('This room contains: '), nl, findall(ObjectsInRoom, member([ObjectsInRoom, CurrentRoom, _], Objects), L), displayList(L).
 
 displayExplosiveTimer(ExplosiveTimer) :- \+ ExplosiveTimer = -1, write('The explosives will detonate in '), write(ExplosiveTimer), write(' second(s).'), nl, nl.
-displayExplosiveTimer(ExplosiveTimer).
+displayExplosiveTimer(_).
 
-displayNChars(Character, N) :- N =< 0.
+displayNChars(_, N) :- N =< 0.
 displayNChars(Character, N) :- N > 0, write(Character), Next is N-1, displayNChars(Character, Next).
 
 displayMeter(Value, MaxValue) :-
