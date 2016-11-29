@@ -366,7 +366,7 @@ flooding :-
 
 flooding :-
     write('Your submarine is flooded, and you can''t go out of it.'), nl,
-    write('Use your diving equipment next time. (If you reincarnated, of course)'), nl,
+    write('Use your diving equipment next time. (If you are reincarnated, of course)'), nl,
     write('Game Over'), nl, nl,
     retract(gameState(_, _, _, _, _, _, _, _, _, _)),
     menuLoop, !.
