@@ -2,6 +2,10 @@
 bin/*
 !bin/.gitkeep
 
+# Latex temporary files
+*.log
+*.aux
+
 # Sublime Text files
 *.sublime-*
 

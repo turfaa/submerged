@@ -46,11 +46,11 @@ path('Reactor', n, 'Surface').
 
 path(CurrentRoom, Direction, CurrentRoom) :- path_story(CurrentRoom, Direction).
 
-path_story('Weapons room', e) :- write('It seems like there''s a way, but there are barrels covering it'), nl.
-path_story('Sonar room', w) :- write('It seems like there''s a way, but there are barrels covering it'), nl.
-path_story('Engine room', e) :- write('The hatch is too small'), nl.
-path_story('Sonar room', n) :- write('The door is locked'), nl.
-path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it'), nl.
+path_story('Weapons room', e) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
+path_story('Sonar room', w) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
+path_story('Engine room', e) :- write('The hole is too small to pass through.'), nl.
+path_story('Sonar room', n) :- write('The door is locked.'), nl.
+path_story('Airlock', s) :- write('It seems like there''s a way, but there are barrels covering it.'), nl.
 
 go(Direction) :- get_currentRoom(CurrentRoom),
                 path(CurrentRoom, Direction, NextRoom),
