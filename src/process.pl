@@ -184,6 +184,21 @@ talk('dying sailor') :-
 		write('The sailor died'), nl,
 		delete(Objects, ['dying sailor', CurrentRoom, 0], NewObjects), set_objects(NewObjects).
 
+/* Ketika hidup sudah mulai keras, saatnya untuk putus asa dan mengakhiri semua ini */
+suicide :-
+	get_inventory(Inventory), member('knive', Inventory),
+	!,
+	write('You are about to suicide, do you really wanna do that?'), nl,
+	write('NB : It''s hurt so much and against god rules'), nl,
+	write('(yes/no)?'), nl,
+	read(user_input, Input), Input = 'yes',
+	!,
+	write('You choose to be dead.'), nl,
+	write('We are dissapointed.'), nl, nl,
+	write('Game Over'), nl, nl,
+	retract(gameState(_, _, _, _, _, _)),
+	menuLoop, !.
+
 /* Switch fuse box */
 
 switch(Object) :-
