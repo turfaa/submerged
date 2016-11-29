@@ -246,14 +246,15 @@ use(crowbar) :-
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
 use(map) :-
-	write('                 Airlock                                 Surface'), nl,
-	write('                    |                                       |'), nl,
-	write('                    |                                       |'), nl,
+	write('                 Airlock                                        '), nl,
+	write('                    |                                           '), nl,
+	write('                    |                                           '), nl,
 	write('Weapons room - Sonar room - Control room - Engine room - Reactor'), nl,
-	write('                    |'), nl,
-	write('                    |'), nl,
-	write('Wardroom - Crew''s quarters - Storage room'), nl, nl,
-	write('<< Forward  Backward >>'), nl, nl,
+<<<<<<< HEAD
+	write('                    |                                           '), nl,
+	write('                    |                                           '), nl,
+	write('Wardroom - Crew''s quarters - Storage room                      '), nl, nl,
+	write('<< Forward  Backward >>                                         '), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
 use('diving equipment') :-
