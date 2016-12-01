@@ -44,16 +44,17 @@ instructions :-
 	write('operate(Object).    -- to operate an object.'), nl,
 	write('check,              -- to check some status display.'),nl,
 	write('suicide.            -- to commit suicide.'), nl,
-	write('talk(Object/NPC).   -- to talk to an npc.'), nl,
+	write('talk(Object/NPC).   -- to talk to an NPC.'), nl,
 	write('stat.               -- to see current status and inventory.'), nl,
 	write('look.               -- to look around in your current room.'), nl,
+	write('activate(Object).   -- to activate an AI.'), nl,
 	write('instructions.       -- to see this message again.'), nl,
 	write('save(Filename).     -- to save current game.'), nl,
 	write('quit.               -- to end the game and go back to main menu.'), nl, nl.
 
 /* Koneksi antar ruangan */
 
-path('Weapons room', e, 'Sonar room') :- get_objects(Objects), \+ member(['barrels', 'Weapons room', 1],Objects), !.
+path('Weapons room', e, 'Sonar room') :- get_objects(Objects), \+ member(['barrels', 'Weapons room', 1], Objects), !.
 path('Sonar room', w, 'Weapons room') :- !.
 path('Sonar room', n, 'Airlock') :- get_airlockLocked(IsLocked), IsLocked == 0, !.
 path('Sonar room', s, 'Crew\'s quarters') :- !.
@@ -114,11 +115,11 @@ use(Barang) :- get_inventory(Inventory), \+ member(Barang, Inventory), !, write(
 use('fire extinguisher') :- !, get_oxygenLevel(Init),
 								Nxt is Init-3,
 								set_oxygenLevel(Nxt),
-								write('You use the fire extinguisher.'),
+								write('You used the fire extinguisher.'),
 								nl,
-								write('Your Oxygen Level is now '),
+								write('The oxygen level is now '),
 								write(Nxt),
-								write('. (evillaugh)'),
+								write('.'),
 								nl, nl,
 								get_inventory(Inventory),
 								delete(Inventory, 'fire extinguisher', NewInventory),
@@ -127,11 +128,12 @@ use('fire extinguisher') :- !, get_oxygenLevel(Init),
 
 use('oxygen canister') :- !, get_oxygenLevel(Init),
 								Tr is Init+5,
-								min(Tr, 10, Nxt),
+								maxOxygenLevel(Mol),
+								min(Tr, Mol, Nxt),
 								set_oxygenLevel(Nxt),
-								write('You use the oxygen canister.'),
+								write('You used the oxygen canister.'),
 								nl,
-								write('Your Oxygen Level is now '),
+								write('The oxygen level is now '),
 								write(Nxt),
 								nl, nl,
 								get_inventory(Inventory),
@@ -162,7 +164,7 @@ use('document 1') :-
 	write('[ End of document ]'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
-use('document 2')   :-
+use('document 2') :-
 	write('[ Protocol concerning vessel self-destruction ]'), nl,
 	write('In an emergency situation, the captain of the vessel may order the crew to abandon vessel.'), nl,
 	write('In this event, the crew must ensure the destruction of the vessel after their evacuation to prevent classified information and technology from being salvaged by the enemy; especially if the vessel is carrying classified documents or equipment.'), nl,
@@ -180,7 +182,7 @@ use('document 3') :-
 	write('Although it has not yet been thoroughly field-tested, High Command insisted that this system be fitted as soon as possible due to the high risk of an impending conflict.'), nl,
 	write('This AI-controlled energy-based defense system is able to automatically detect and neutralize threats in a 100 metre radius around the ship. The exact workings are highly classified.'), nl,
 	write('As this system emits a significant amount of easily detectable electromagnetic pulses, it is advisable to only activate this system when the sub is already detected by the enemy and is under attack.'), nl,
-	write('It''s control system is directly linked to the sub''s control AI.'), nl,
+	write('Its control system is directly linked to the sub''s control AI.'), nl,
 	write('Only the captain may authorize its use; the activation code is 293441.'), nl,
 	write('[ End of document ]'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
@@ -242,7 +244,7 @@ use(crowbar) :-
 	get_objects(Objects),
 	delete(Objects, ['hole', CurrentRoom, 1], NewObjects),
 	set_objects(NewObjects),
-	write('You use the crowbar to widen the hole.'), nl, nl,
+	write('You used the crowbar to clear a path outside.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
 use(map) :-
@@ -257,7 +259,7 @@ use(map) :-
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
 use('diving equipment') :-
-	write('You wear the diving equipment.'), nl, nl,
+	write('You wore the diving equipment.'), nl, nl,
 	get_inventory(Inventory),
 	delete(Inventory, 'diving equipment', NewInventory),
 	set_inventory(NewInventory).
@@ -314,8 +316,8 @@ talk(radio) :-
 		get_objects(Objects), member(['radio', CurrentRoom, 1], Objects),
 		\+ member(['dying sailor',_,_], Objects),
 		!,
-		write('You enter the radio''s password'), nl,
-		write('Your secondary objective is destroy this submarine'), nl, nl,
+		write('You entered the radio''s password, from the paper the dying sailor gave you.'), nl,
+		write('Your secondary objective is to destroy this submarine, to prevent secrets falling to enemy hands.'), nl, nl,
 		get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
 talk(radio) :-
@@ -324,35 +326,35 @@ talk(radio) :-
 		Power = 1,
 		get_objects(Objects), member(['radio', CurrentRoom, 1], Objects),
 		!,
-		write('You found a radio, but it''s password protected'), nl, nl,
+		write('You found a radio, but it''s password protected.'), nl, nl,
 		get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
 talk('dying sailor') :-
 		get_currentRoom(CurrentRoom),
 		get_objects(Objects), member(['dying sailor', CurrentRoom, 0], Objects),
 		!,
-		write('Please do something for me, hear the radio. This is the password'), nl,
+		write('Please do something for me, hear the radio. This is the password. (Dying sailor handed you a paper).'), nl,
 		write('The sailor died'), nl, nl,
 		delete(Objects, ['dying sailor', CurrentRoom, 0], NewObjects), set_objects(NewObjects),
 		get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
-talk('Ship control AI') :-
+talk('ship control AI') :-
 	get_currentRoom(CurrentRoom),
-	get_objects(Objects), member(['Ship control AI',CurrentRoom,1], Objects),
+	get_objects(Objects), member(['ship control ai',CurrentRoom,1], Objects),
 	!,
-	write('Hello, I''m Aria. I can controll defense system of this ship'), nl.
+	write('Hello, I''m Aria. I can control the defense system of this ship'), nl.
 
 talk(Object) :-
 		write('You cannot talk to '), write(Object), write('.'), nl, nl,
 		get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance).
 
 /* Terkadang diantara kesulitan hidup, kemudahan selalu datang dalam bentuk perlindungan terhadap kapal */
-activate('Ship control AI') :-
+activate('ship control AI') :-
 	get_currentRoom(CurrentRoom),
 	get_objects(Objects),
-	member(['Ship control AI',CurrentRoom,1], Objects),
+	member(['ship control ai',CurrentRoom,1], Objects),
 	member(['ai_defense_activated','untouched',0], Objects),
-	write('You''re about to activate defense system.'), nl,
+	write('You''re about to activate the ship''s automated defense system.'), nl,
 	write('The defense system is password protected.'), nl,
 	write('Please enter the password: '),
 	read(user_input, Input), Input = '293441',
@@ -362,10 +364,10 @@ activate('Ship control AI') :-
 	delete(Objects, ['ai_defense_activated','untouched',0], NewObjects),
 	set_objects(NewObjects).
 
-activate('Ship control AI') :-
+activate('ship control ai') :-
 	get_currentRoom(CurrentRoom),
 	get_objects(Objects),
-	member(['Ship control AI',CurrentRoom,1], Objects),
+	member(['ship control ai',CurrentRoom,1], Objects),
 	member(['ai_defense_activated','untouched',0], Objects),
 	!,
 	write('Wrong password!'), nl.
@@ -374,12 +376,11 @@ activate('Ship control AI') :-
 suicide :-
 	get_inventory(Inventory), member('knife', Inventory),
 	!,
-	write('You are about to suicide, do you really wanna do that?'), nl,
-	write('NB : It''s hurt so much and against god rules'), nl,
+	write('You are about to commit suicide, do you really want to do that?'), nl,
 	write('(yes/no)?'), nl,
 	read(user_input, Input), Input = 'yes',
 	!,
-	write('You choose to be dead.'), nl,
+	write('You chose to die.'), nl,
 	write('We are dissapointed.'), nl, nl,
 	write('Game Over'), nl, nl,
 	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
@@ -476,7 +477,7 @@ operate('control panel') :-
     get_reactorLocked(Reactor),
     Airlock == 1,
     Reactor == 1,
-	write('You unlock all hatches.'), nl, nl,
+	write('You unlocked all hatches.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance),
     set_airlockLocked(0),
     set_reactorLocked(0).
@@ -488,7 +489,7 @@ operate('control panel') :-
     get_reactorLocked(Reactor),
     Airlock == 0,
     Reactor == 0,
-	write('You lock all hatches.'), nl, nl,
+	write('You locked all hatches.'), nl, nl,
 	get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance),
     get_distance(OldDistance), NewDistance is OldDistance - 15, set_distance(NewDistance),
     set_airlockLocked(1),
@@ -507,7 +508,7 @@ flooding :-
 
 flooding :-
     write('Your submarine is flooded, and you can''t go out of it.'), nl,
-    write('Use your diving equipment next time. (If you are reincarnated, of course)'), nl,
+    write('Use your diving equipment next time.'), nl,
     write('Game Over'), nl, nl,
     retract(gameState(_, _, _, _, _, _, _, _, _, _)),
     menuLoop, !.
@@ -529,7 +530,7 @@ gameOver :-
 	get_oxygenLevel(Oxygen),
 	Oxygen = 0,
 	write('You ran out of oxygen.'), nl,
-	write('You are starting to lose your consciousness.'), nl, nl,
+	write('You are starting to lose consciousness.'), nl, nl,
 	write('Game Over'), nl, nl,
 	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	menuLoop, !.
@@ -548,7 +549,7 @@ gameOver :-
 	member(['ai_defense_activated','untouched',0], Objects),
 	get_distance(Distance),
 	Distance =< 300,
-	write('The enemy''s sub attacks this submarine.'), nl,
+	write('The enemy''s sub attacked this submarine.'), nl,
 	write('You died.'), nl, nl,
 	write('Game Over'), nl, nl,
 	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
@@ -575,7 +576,7 @@ win :-
 	render_status,
 	get_explosiveTimer(ExplosiveTimer),
 	ExplosiveTimer == -1,
-	write('You didn''t do the secondary objective'), nl, nl,
+	write('You have not completed the secondary objective.'), nl, nl,
 	retract(gameState(_, _, _, _, _, _, _, _, _, _)),
 	credit,
 	menuLoop, !.
@@ -585,10 +586,11 @@ winmessage :-
 	write('You reach the surface.'), nl,
 	write('The sky is clear, and moonlight reflected off the somewhat calm sea, dotted with specks of oil and floating debris from the destroyed vessels.'), nl,
 	write('In the distance, you see enemy ships sailing past the border.'), nl,
-	write('The war has just started.'), nl, nl.
+	write('Then you realize, the war has just started.'), nl, nl.
 
 
 credit :-
+	write('TO BE CONTINUED.'), nl, nl,
 	write('This game was created by:'), nl,
 	write('> Jonathan Christopher / 13515001'), nl,
 	write('> Jordhy Fernando / 13515004'), nl,

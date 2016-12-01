@@ -19,10 +19,10 @@ displayCurrentRoom(CurrentRoom) :- write('You are in the '), write(CurrentRoom),
 displayStoryRoom('Weapons room') :- 
 	write('You are in the weapons room, at the bow of the sub.'), nl,
 	write('Only the faint red glow of the emergency fluorescent lighting remains.'), nl,
-	write('The impact of the explosion has dislodged the stored weapons, which are now scattered on the floor. (Barrels blocked the exit hatch.)'), nl, nl.
+	write('The impact of the explosion has dislodged the stored weapons and barrels, which are now scattered on the floor.'), nl, nl.
 
 displayStoryRoom('Sonar room') :-	
-	write('You entered the sonar room. (The sonar display is powered off./The sonar display emits a faint blue glow.)'), nl,
+	write('You entered the sonar room.'), nl,
 	write('There''s a ladder that leads to the airlock upwards, through a closed hatch.'), nl,
 	write('Another closed hatch leads to the crew''s quarters below.'), nl,
 	write('A passage opens to the control room in the back.'), nl, nl.
@@ -66,7 +66,7 @@ displayStoryRoom('Engine room') :-
 displayStoryRoom('Reactor') :-
 	write('The reactor is flooded and heavily damaged.'), nl,
 	write('It''s metal parts were torn apart.'), nl,
-	write('The hull has been sliced through; a gaping hole opens to the outside. (However, bent frames and metal pipes are blocking your way. You need to somehow clear the way by force to pass through and go outside.)'), nl, nl.
+	write('The hull has been sliced through; a gaping hole opens to the outside. However, bent frames and metal pipes are blocking your way. You need to somehow clear the way by force to pass through and go outside.'), nl, nl.
 	
 displayInventory(Inventory) :- length(Inventory, X), X > 0, !, write('You are carrying:'), nl, displayList(Inventory).
 

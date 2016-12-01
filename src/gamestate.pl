@@ -93,7 +93,7 @@ init_gameState :-
 		['map', 'Control room', 0],
 		['radio', 'Control room', 1],
 		['periscope', 'Control room', 1],
-		['Ship control AI', 'Control room',1],
+		['ship control AI', 'Control room',1],
 
 		['fuse box', 'Engine room', 1],
 		['reactor status display', 'Engine room', 1],
